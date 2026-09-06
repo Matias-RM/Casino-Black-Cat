@@ -19,10 +19,6 @@ public class VentanaRegistro {
 
         SwingUtilities.invokeLater(() -> {
 
-
-
-
-
     });
     }
 }
