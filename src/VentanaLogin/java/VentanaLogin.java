@@ -10,12 +10,11 @@ public class VentanaLogin {
     // --- Componentes de la interfaz gráfica ---
     private final JFrame frame = new JFrame("Login - Casino Black Cat");
     private final JPanel panel = new JPanel();
-    private final JLabel lblUsuario = new JLabel("Usuario:");
+    private final JLabel lblUsuario = new JLabel("Nombre de usuario:");
     private final JTextField txtUsuario = new JTextField();
     private final JLabel lblClave = new JLabel("Clave:");
     private final JPasswordField txtClave = new JPasswordField();
     private final JButton btnIngresar = new JButton("Ingresar");
-    private final JFrame registroSesion = new JFrame("Sign up - Casino Black Cat");
 
     /**
      * Constructor que inicializa la ventana de inicio de sesión.
@@ -25,9 +24,7 @@ public class VentanaLogin {
 // TODO: Agregar los usuarios iniciales a la lista
 // TODO: Inicializar y configurar la ventana
 
-
         SwingUtilities.invokeLater(() -> {
-
 
             frame.setSize(800, 600);
 
@@ -41,12 +38,10 @@ public class VentanaLogin {
             txtClave.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnIngresar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            Dimension tamañoCampo = new Dimension(200, 30);
-            txtUsuario.setPreferredSize(tamañoCampo);
-            txtUsuario.setMaximumSize(tamañoCampo);
-
-            txtClave.setPreferredSize(tamañoCampo);
-            txtClave.setMaximumSize(tamañoCampo);
+            txtUsuario.setPreferredSize(new Dimension(200, 30));
+            txtUsuario.setMaximumSize(new Dimension(200,30));
+            txtClave.setPreferredSize(new Dimension(200, 30));
+            txtClave.setMaximumSize(new Dimension(200,30));
 
             panel.add(lblUsuario);
             panel.add(txtUsuario);
@@ -82,7 +77,18 @@ public class VentanaLogin {
 // TODO: Implementar la lógica de inicio de sesión
 
 
+        String nombreUsuario = txtUsuario.getText();
+        String claveUsuario = txtClave.getText();
+        String resultado = validarCredenciales(nombreUsuario, claveUsuario);
+        if (resultado.equals("")) {
+            JOptionPane.showMessageDialog(frame, "Usuario o Clave no valido");
+        } else {
+            JOptionPane.showMessageDialog(frame, "Bienvenido usuario: " + resultado);
+            abrirRegistro();
+        }
+
     }
+
 
     /**
      * Valida las credenciales ingresadas utilizando la lista de usuarios.
@@ -90,20 +96,26 @@ public class VentanaLogin {
      * @param u nombre de usuario ingresado
      * @param p contraseña ingresada
      * @return el nombre del usuario si las credenciales son válidas o una cadena vacía
-     * si no existe una coincidencia
+    si no existe una coincidencia
      */
     private String validarCredenciales(String u, String p) {
 // TODO: Recorrer la lista y validar las credenciales
 
+        for (Object o : USUARIOS) {
+            if (((Usuario) o).validarCredencialess(u, p)) {
+                return ((Usuario) o).getNombre();
+            }
+        }
         return "";
     }
-
     /**
      * Abre la ventana de registro para crear un nuevo usuario.
      * Debe cerrar la ventana actual e invocar a VentanaRegistro.
      */
     private void abrirRegistro() {
 // TODO: Cerrar la ventana actual y abrir la ventana de registro
+
+        frame.dispose();
 
     }
 }
