@@ -8,13 +8,15 @@ public class VentanaLogin {
     // --- Lista dinámica de usuarios ---
     public static final List USUARIOS = new ArrayList<>();
     // --- Componentes de la interfaz gráfica ---
-    private final JFrame frame = new JFrame("Login - Casino Black Cat");
+    private final JFrame frame = new JFrame("LogIn - Casino Black Cat");
     private final JPanel panel = new JPanel();
     private final JLabel lblUsuario = new JLabel("Nombre de usuario:");
     private final JTextField txtUsuario = new JTextField();
     private final JLabel lblClave = new JLabel("Clave:");
     private final JPasswordField txtClave = new JPasswordField();
     private final JButton btnIngresar = new JButton("Ingresar");
+    private final VentanaRegistro registro = new VentanaRegistro();
+    private final JButton btnRegistrar = new JButton("Registrar");
 
     /**
      * Constructor que inicializa la ventana de inicio de sesión.
@@ -24,19 +26,22 @@ public class VentanaLogin {
 // TODO: Agregar los usuarios iniciales a la lista
 // TODO: Inicializar y configurar la ventana
 
+        Usuario usuario = new Usuario("admin", "12345678", "admin");
+        USUARIOS.add(usuario);
+
         SwingUtilities.invokeLater(() -> {
 
             frame.setSize(800, 600);
-
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
             panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-            panel.setBorder(new EmptyBorder(200, 200, 200, 200));
+            panel.setBorder(new EmptyBorder(200, 200, 0, 200));
 
             lblUsuario.setAlignmentX(Component.CENTER_ALIGNMENT);
             txtUsuario.setAlignmentX(Component.CENTER_ALIGNMENT);
             lblClave.setAlignmentX(Component.CENTER_ALIGNMENT);
             txtClave.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnIngresar.setAlignmentX(Component.CENTER_ALIGNMENT);
+            btnRegistrar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             txtUsuario.setPreferredSize(new Dimension(200, 30));
             txtUsuario.setMaximumSize(new Dimension(200,30));
@@ -48,10 +53,13 @@ public class VentanaLogin {
             panel.add(lblClave);
             panel.add(txtClave);
             panel.add(btnIngresar);
+            panel.add(btnRegistrar);
             btnIngresar.addActionListener(e -> login());
-            frame.add(panel);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            btnRegistrar.addActionListener(a-> abrirRegistro());
 
+            frame.add(panel);
+
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         });
 
@@ -67,7 +75,6 @@ public class VentanaLogin {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
-
     /**
      * Gestiona el inicio de sesión al presionar el botón.
      * Debe validar las credenciales ingresadas y abrir la siguiente
@@ -76,15 +83,19 @@ public class VentanaLogin {
     private void login() {
 // TODO: Implementar la lógica de inicio de sesión
 
-
         String nombreUsuario = txtUsuario.getText();
         String claveUsuario = txtClave.getText();
         String resultado = validarCredenciales(nombreUsuario, claveUsuario);
+
         if (resultado.equals("")) {
-            JOptionPane.showMessageDialog(frame, "Usuario o Clave no valido");
+
+            JOptionPane.showMessageDialog(frame, "Usuario o Clave no valido", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
+
             JOptionPane.showMessageDialog(frame, "Bienvenido usuario: " + resultado);
-            abrirRegistro();
+            frame.dispose();
+
+            Ruleta.main(null);
         }
 
     }
@@ -116,6 +127,7 @@ public class VentanaLogin {
 // TODO: Cerrar la ventana actual y abrir la ventana de registro
 
         frame.dispose();
+        registro.mostrarVentanaRegistro();
 
     }
 }
