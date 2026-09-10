@@ -69,7 +69,7 @@ public class VentanaRegistro {
     /**
      * Gestiona el registro de usuarios.
      */
-    public void signUp() {
+    private void signUp() {
         // TODO: Implementar la logica del registro.
 
         if (txtNombre.getText().equals("") || txtUsuario.getText().equals("") || txtClave.getText().equals("")) {
