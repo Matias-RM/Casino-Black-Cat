@@ -5,11 +5,10 @@ import java.awt.*;
 
 public class VentanaRuleta {
     private final JFrame frame = new JFrame("Ruleta - Casino Black Cat");
+    private final JPanel panelLabels = new JPanel();
+    private final JPanel panelSeleccion = new JPanel();
     private final JPanel panelPrincipal = new JPanel();
     private final JPanel panelTipoApuesta = new JPanel();
-    private final JPanel panelColor = new JPanel();
-    private final JPanel panelParidad = new JPanel();
-    private final JPanel panelMonto = new JPanel();
     private final JLabel lblTipoApuesta = new JLabel("Tipo de apuesta: ");
     private final JLabel lblColor = new JLabel("Seleccione Color: ");
     private final JLabel lblParidad = new JLabel("Seleccione paridad: ");
@@ -28,8 +27,13 @@ public class VentanaRuleta {
 
         frame.setSize(800,600);
 
-        panelPrincipal.setLayout(new BoxLayout(panelPrincipal,BoxLayout.Y_AXIS));
-
+        comboTipoApuesta.setPreferredSize(new Dimension(200,30));
+        comboColor.setPreferredSize(new Dimension(200,30));
+        comboParidad.setPreferredSize(new Dimension(200,30));
+        panelTipoApuesta.setPreferredSize(new Dimension(200,30));
+        panelLabels.setLayout(new BoxLayout(panelLabels,BoxLayout.Y_AXIS));
+        panelSeleccion.setLayout(new BoxLayout(panelSeleccion,BoxLayout.Y_AXIS));
+        panelLabels.setLayout(new GridLayout(4,1, 15,15));
 
         comboTipoApuesta.addItem("Color");
         comboTipoApuesta.addItem("Paridad");
@@ -38,25 +42,25 @@ public class VentanaRuleta {
         comboParidad.addItem("Par");
         comboParidad.addItem("Impar");
 
-        panelTipoApuesta.add(lblTipoApuesta);
-        panelTipoApuesta.add(comboTipoApuesta);
-        panelColor.add(lblColor);
-        panelColor.add(comboColor);
-        panelParidad.add(lblParidad);
-        panelParidad.add(comboParidad);
-        panelMonto.add(lblMonto);
+        panelLabels.add(lblTipoApuesta);
+        panelLabels.add(lblColor);
+        panelLabels.add(lblParidad);
+        panelLabels.add(lblMonto);
 
-        panelPrincipal.add(panelTipoApuesta);
-        panelPrincipal.add(panelColor);
-        panelPrincipal.add(panelParidad);
-        panelPrincipal.add(panelMonto);
+        panelSeleccion.add(comboTipoApuesta);
+        panelSeleccion.add(comboColor);
+        panelSeleccion.add(comboParidad);
+        panelSeleccion.add(btnGirar);
 
         comboParidad.setEnabled(false);
-        comboColor.setEnabled(false);
+
+        panelPrincipal.add(panelLabels);
+        panelPrincipal.add(panelSeleccion);
 
         comboTipoApuesta.addActionListener(e -> actualizarOpciones());
+        //comboColor.addActionListener(e -> );
 
-        frame.add(panelPrincipal, BorderLayout.CENTER);
+        frame.add(panelPrincipal, BorderLayout.NORTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
     }
@@ -77,5 +81,7 @@ public class VentanaRuleta {
             comboColor.setEnabled(false);
         }
     }
+    private void seleccionarColor() {
 
+    }
 }
