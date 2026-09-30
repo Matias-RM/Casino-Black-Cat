@@ -1,3 +1,6 @@
+package Vista;
+
+import Modelo.Usuario;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -70,7 +73,6 @@ public class VentanaRegistro {
      * Gestiona el registro de usuarios.
      */
     private void signUp() {
-        // TODO: Implementar la logica del registro.
 
         if (txtNombre.getText().equals("") || txtUsuario.getText().equals("") || txtClave.getText().equals("")) {
             JOptionPane.showMessageDialog(frame, "Hay campos vacios, intente nuevamente", "Error", JOptionPane.ERROR_MESSAGE);
