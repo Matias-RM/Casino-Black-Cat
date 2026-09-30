@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class VentanaMenu {
+
     private final JFrame frame = new JFrame("Menú - Casino Black Cat");
     private final JPanel panelBotones = new JPanel();
     private final JPanel panelInfo = new JPanel();
@@ -40,12 +41,31 @@ public class VentanaMenu {
 
             frame.add(panelBotones,BorderLayout.WEST);
             frame.add(panelInfo,BorderLayout.CENTER);
+
+            btnInicio.addActionListener(a -> irIngreso());
+            btnJugar.addActionListener(e ->irRuleta());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
         });
     }
     public void mostrarVentana() {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
+    }
+    private void irRuleta() {
 
+        final VentanaRuleta ventanaRuleta =  new VentanaRuleta();
+        frame.dispose();
+        SwingUtilities.invokeLater(()-> {
+            ventanaRuleta.mostrarVentana();
+        });
+    }
+    private void irIngreso() {
+        final VentanaLogin ventanaLogin = new VentanaLogin();
+        frame.dispose();
+        SwingUtilities.invokeLater(()-> {
+            ventanaLogin.mostrarVentana();
+        });
     }
 }
