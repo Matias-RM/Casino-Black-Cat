@@ -19,7 +19,7 @@ public class VentanaRuleta {
     private final JComboBox<String> comboParidad = new JComboBox<>();
     private final JButton btnGirar = new JButton("Girar");
 
-    private final JButton btnRegistrar = new JButton("Registrar");
+
 
     public VentanaRuleta() {
 
@@ -81,7 +81,5 @@ public class VentanaRuleta {
             comboColor.setEnabled(false);
         }
     }
-    private void seleccionarColor() {
 
-    }
 }
