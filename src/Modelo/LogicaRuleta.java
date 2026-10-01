@@ -92,9 +92,6 @@ public class LogicaRuleta {
         return numero;
     }
 
-
-
-
     /**
      * Simula el giro de la ruleta generando un número
      * aleatorio de 0 a 36.
@@ -113,6 +110,7 @@ public class LogicaRuleta {
      *
      * @return true si acertó, false si perdió.
      */
+    //TODO: Agregar caso de color Verde
     public static boolean evaluarResultado(int numero, String tipoApuesta, String color, String paridad) {
 
         if (tipoApuesta.equals("Color")) {
