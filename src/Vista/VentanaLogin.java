@@ -1,3 +1,6 @@
+package Vista;
+
+import Modelo.Usuario;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -9,7 +12,8 @@ public class VentanaLogin {
     public static final List USUARIOS = new ArrayList<>();
     // --- Componentes de la interfaz gráfica ---
     private final JFrame frame = new JFrame("LogIn - Casino Black Cat");
-    private final JPanel panel = new JPanel();
+    private final JPanel panelTextos = new JPanel();
+    private final JPanel panelBoton = new JPanel();
     private final JLabel lblUsuario = new JLabel("Nombre de usuario:");
     private final JTextField txtUsuario = new JTextField();
     private final JLabel lblClave = new JLabel("Clave:");
@@ -17,7 +21,8 @@ public class VentanaLogin {
     private final JButton btnIngresar = new JButton("Ingresar");
     private final VentanaRegistro registro = new VentanaRegistro();
     private final JButton btnRegistrar = new JButton("Registrar");
-
+    private final VentanaMenu ventanaMenu = new VentanaMenu();
+    private final Dimension dimensionGeneral = new Dimension(200, 30);
     /**
      * Constructor que inicializa la ventana de inicio de sesión.
      * Configura sus componentes y eventos.
@@ -32,9 +37,8 @@ public class VentanaLogin {
         SwingUtilities.invokeLater(() -> {
 
             frame.setSize(800, 600);
-            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-            panel.setBorder(new EmptyBorder(200, 200, 0, 200));
+            panelTextos.setLayout(new BoxLayout(panelTextos, BoxLayout.Y_AXIS));
+            panelTextos.setBorder(new EmptyBorder(200, 200, 0, 200));
 
             lblUsuario.setAlignmentX(Component.CENTER_ALIGNMENT);
             txtUsuario.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -43,26 +47,25 @@ public class VentanaLogin {
             btnIngresar.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnRegistrar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            txtUsuario.setPreferredSize(new Dimension(200, 30));
-            txtUsuario.setMaximumSize(new Dimension(200,30));
-            txtClave.setPreferredSize(new Dimension(200, 30));
-            txtClave.setMaximumSize(new Dimension(200,30));
+            txtUsuario.setPreferredSize(dimensionGeneral);
+            txtUsuario.setMaximumSize(dimensionGeneral);
+            txtClave.setPreferredSize(dimensionGeneral);
+            txtClave.setMaximumSize(dimensionGeneral);
 
-            panel.add(lblUsuario);
-            panel.add(txtUsuario);
-            panel.add(lblClave);
-            panel.add(txtClave);
-            panel.add(btnIngresar);
-            panel.add(btnRegistrar);
+            panelTextos.add(lblUsuario);
+            panelTextos.add(txtUsuario);
+            panelTextos.add(lblClave);
+            panelTextos.add(txtClave);
+            panelBoton.add(btnIngresar);
+            panelBoton.add(btnRegistrar);
             btnIngresar.addActionListener(e -> login());
             btnRegistrar.addActionListener(a-> abrirRegistro());
 
-            frame.add(panel);
-
+            panelBoton.setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
+            frame.add(panelTextos,  BorderLayout.NORTH);
+            frame.add(panelBoton);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         });
-
     }
 
     /**
@@ -95,7 +98,7 @@ public class VentanaLogin {
             JOptionPane.showMessageDialog(frame, "Bienvenido usuario: " + resultado);
             frame.dispose();
 
-            Ruleta.main(null);
+            ventanaMenu.mostrarVentana();
         }
 
     }
