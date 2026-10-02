@@ -4,21 +4,22 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class LogicaRuleta {
-    public static final int MAX_HISTORIAL = 100;
-    public static final int CANTIDAD_NUMEROS = 37;
-    public static int[] historialNumeros = new int[MAX_HISTORIAL];
-    public static int[] historialApuestas = new int[MAX_HISTORIAL];
-    public static boolean[] historialAciertos = new boolean[MAX_HISTORIAL];
-    public static int historialSize = 0;
-    public static Random rng = new Random();
-    public static int[] numerosRojos = {
+    private static final int MAX_HISTORIAL = 100;
+    private static final int CANTIDAD_NUMEROS = 37;
+    private static int[] historialNumeros = new int[MAX_HISTORIAL];
+    private static int[] historialApuestas = new int[MAX_HISTORIAL];
+    private static boolean[] historialAciertos = new boolean[MAX_HISTORIAL];
+    private static int historialSize = 0;
+    private static Random rng = new Random();
+    private static int[] numerosRojos = {
             1, 3, 5, 7, 9, 12, 14, 16, 18,
             19, 21, 23, 25, 27, 30, 32, 34, 36
     };
+    private final int randNum = girarRuleta();
     /**
      * Método principal: inicia el programa llamando al menú.
      */
-    public static void main(String[] args) {
+    public void main(String[] args) {
         menu();
     }
 
@@ -26,7 +27,11 @@ public class LogicaRuleta {
      * Controla el flujo principal del programa mostrando
      * un menú en consola.
      */
-    public static void menu() {
+
+    public int getRandomNum() {
+        return randNum;
+    }
+    private void menu() {
         Scanner in = new Scanner(System.in);
         int opcion;
 
@@ -39,11 +44,10 @@ public class LogicaRuleta {
         in.close();
         System.out.println("¡Gracias por jugar en el Casino Black Cat!");
     }
-
     /**
      * Muestra en consola las opciones disponibles del menú.
      */
-    public static void mostrarMenu() {
+    private void mostrarMenu() {
         System.out.println("\n=== CASINO BLACK CAT - RULETA ===");
         System.out.println("1. Iniciar ronda");
         System.out.println("2. Ver estadísticas");
@@ -57,7 +61,7 @@ public class LogicaRuleta {
      * @param in Scanner para entrada por consola.
      * @return número de opción ingresado.
      */
-    public static int leerOpcion(Scanner in) {
+    private static int leerOpcion(Scanner in) {
         return in.nextInt();
     }
 
@@ -67,7 +71,7 @@ public class LogicaRuleta {
      * @param opcion opción elegida por el usuario.
      * @param in Scanner para entrada por consola.
      */
-    public static void ejecutarOpcion(int opcion, Scanner in) {
+    private void ejecutarOpcion(int opcion, Scanner in) {
         if (opcion == 1) {
             //iniciarRonda(in);
         } else if (opcion == 2) {
@@ -81,15 +85,14 @@ public class LogicaRuleta {
      * evaluar y mostrar resultado.
      *
      */
-    public static int iniciarRonda(String tipoApuesta,String color, String paridad , int monto) {
+    public void iniciarRonda(String tipoApuesta,String color, String paridad , int monto) {
         if (historialSize >= MAX_HISTORIAL) {
-            return 0;
+            return;
         }
-        int numero = girarRuleta();
+        int numero = randNum;
         boolean acierto = evaluarResultado(numero, tipoApuesta, color, paridad);
         registrarResultado(numero, monto, acierto);
         mostrarResultado(numero, tipoApuesta, monto, acierto);
-        return numero;
     }
 
     /**
@@ -98,7 +101,7 @@ public class LogicaRuleta {
      *
      * @return número de la ruleta.
      */
-    public static int girarRuleta() {
+    private int girarRuleta() {
         return rng.nextInt(CANTIDAD_NUMEROS);
     }
 
@@ -111,19 +114,19 @@ public class LogicaRuleta {
      * @return true si acertó, false si perdió.
      */
     //TODO: Agregar caso de color Verde
-    public static boolean evaluarResultado(int numero, String tipoApuesta, String color, String paridad) {
+    public boolean evaluarResultado(int numero, String tipoApuesta, String color, String paridad) {
 
         if (tipoApuesta.equals("Color")) {
             if (color.equals("Rojo")) {
                 return esRojo(numero);
-            } else {//Negro
+            } else {// Negro
                 return !esRojo(numero) && numero != 0;
             }
         }
         if (tipoApuesta.equals("Paridad")) {
             if (paridad.equals("Par")) {
                 return numero != 0 && numero % 2 == 0;
-            } else {//Impar
+            } else {// Impar
                 return numero % 2 != 0;
             }
         }
@@ -136,7 +139,7 @@ public class LogicaRuleta {
      * @param n número de la ruleta.
      * @return true si es rojo, false en caso contrario.
      */
-    public static boolean esRojo(int n) {
+    private boolean esRojo(int n) {
         for (int i = 0; i < numerosRojos.length; i++) {
             if (numerosRojos[i] == n) {
                 return true;
@@ -153,7 +156,7 @@ public class LogicaRuleta {
      * @param apuesta monto apostado.
      * @param acierto si el jugador acertó o no.
      */
-    public static boolean registrarResultado(int numero, int apuesta, boolean acierto) {
+    private boolean registrarResultado(int numero, int apuesta, boolean acierto) {
         if (historialSize < MAX_HISTORIAL) {
             historialNumeros[historialSize] = numero;
             historialApuestas[historialSize] = apuesta;
@@ -168,11 +171,11 @@ public class LogicaRuleta {
      * Muestra en consola el resultado de la ronda.
      *
      * @param numero número obtenido en la ruleta.
-     * @param tipo tipo de apuesta realizada.
+     * @param tipoApuesta tipo de apuesta realizada.
      * @param monto monto apostado.
      * @param acierto si el jugador ganó o perdió.
      */
-    public static void mostrarResultado(int numero, String tipo, int monto, boolean acierto) {
+    private void mostrarResultado(int numero, String tipoApuesta, int monto, boolean acierto) {
         System.out.println("\n--- RESULTADO DE LA RONDA ---");
         System.out.println("Número obtenido: " + numero);
 
@@ -184,13 +187,14 @@ public class LogicaRuleta {
             System.out.println("Color: Negro");
         }
 
-        if (tipo == "Rojo") {
+        if (tipoApuesta == "Rojo") {
             System.out.println("Tipo de apuesta: Rojo");
-        } else if (tipo == "Negro") {
+        } else { // Negro
             System.out.println("Tipo de apuesta: Negro");
-        } else if (tipo == "Par") {
+        }
+        if (tipoApuesta == "Par") {
             System.out.println("Tipo de apuesta: Par");
-        } else { // tipo == 'I'
+        } else { // Impar
             System.out.println("Tipo de apuesta: Impar");
         }
 
@@ -208,7 +212,7 @@ public class LogicaRuleta {
      * Muestra estadísticas generales de todas las
      * rondas jugadas.
      */
-    public static void mostrarEstadisticas() {
+    private void mostrarEstadisticas() {
         System.out.println("\n ESTADÍSTICAS DEL JUEGO ");
 
         if (historialSize == 0) {
