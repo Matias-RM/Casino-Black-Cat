@@ -111,10 +111,12 @@ public class VentanaRuleta {
         }
     }
      private void iniciarRuleta() {
-        int numero = LogicaRuleta.iniciarRonda(comboTipoApuesta.getSelectedItem().toString(), comboColor.getSelectedItem().toString(), comboParidad.getSelectedItem().toString(), getMonto());
-         boolean acierto = LogicaRuleta.evaluarResultado(numero, comboTipoApuesta.getSelectedItem().toString(), comboColor.getSelectedItem().toString(), comboParidad.getSelectedItem().toString());
+        LogicaRuleta logica = new LogicaRuleta();
+        logica.iniciarRonda(comboTipoApuesta.getSelectedItem().toString(), comboColor.getSelectedItem().toString(), comboParidad.getSelectedItem().toString(), getMonto());
+         int numeroJuego = logica.getRandomNum();
+         boolean acierto = logica.evaluarResultado(numeroJuego, comboTipoApuesta.getSelectedItem().toString(), comboColor.getSelectedItem().toString(), comboParidad.getSelectedItem().toString());
 
-         txtProceRuleta.setText("Numero elegido "+ numero + "|" + " Apuesta = "+ tipoApuesta() + "| Monto= "+ getMonto() + "| Resultado"+ resultado(acierto)+" |");
+         txtProceRuleta.setText("Numero elegido " + numeroJuego + "|" + " Apuesta = "+ tipoApuesta() + "| Monto= "+ getMonto() + "| Resultado"+ resultado(acierto)+" |");
 
      }
     private String tipoApuesta() {
@@ -128,7 +130,7 @@ public class VentanaRuleta {
     }
     private String resultado(boolean acierto) {
         if  (acierto) {
-            return "Has Ganado";
+            return "¡¡Has Ganado!!";
         } else {
             return "Has Perdido";
         }
