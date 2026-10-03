@@ -31,6 +31,14 @@ public class LogicaRuleta {
     public int getRandomNum() {
         return randNum;
     }
+    public int montoAcierto(int monto,boolean acierto){
+        if (acierto){
+            monto = monto * 2;
+            return monto;
+        } else {
+            return 0;
+        }
+    }
     private void menu() {
         Scanner in = new Scanner(System.in);
         int opcion;
