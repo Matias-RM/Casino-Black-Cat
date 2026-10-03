@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class VentanaRuleta {
+    private int indiceHistorial = 1;
     private final JFrame frame = new JFrame("Ruleta - Casino Black Cat");
     private final JPanel panelLabels = new JPanel();
     private final JPanel panelSeleccion = new JPanel();
@@ -16,7 +17,7 @@ public class VentanaRuleta {
     private final JLabel lblParidad = new JLabel("Seleccione paridad: ");
     private final JLabel lblMonto = new JLabel("Monto: ");
     private final JTextField txtSaldo = new JTextField();
-    private final JTextField txtProceRuleta = new JTextField();
+    private final JTextArea txtProceRuleta = new JTextArea(100, 1);
 
     private final JComboBox<String> comboTipoApuesta = new JComboBox<>();
     private final JComboBox<String> comboColor = new JComboBox<>();
@@ -34,6 +35,9 @@ public class VentanaRuleta {
             comboTipoApuesta.setPreferredSize(new Dimension(200, 30));
             comboColor.setPreferredSize(new Dimension(200, 30));
             comboParidad.setPreferredSize(new Dimension(200, 30));
+            txtProceRuleta.setPreferredSize(new Dimension(600, 300));
+            txtProceRuleta.setMaximumSize(new Dimension(600, 300));
+            txtProceRuleta.setMinimumSize(new Dimension(600, 300));
             panelPrincipalVertical.setLayout(new BoxLayout(panelPrincipalVertical, BoxLayout.Y_AXIS));
             panelLabels.setLayout(new BoxLayout(panelLabels, BoxLayout.Y_AXIS));
             panelSeleccion.setLayout(new BoxLayout(panelSeleccion, BoxLayout.Y_AXIS));
@@ -135,6 +139,10 @@ public class VentanaRuleta {
         }
     }
     private void imprimirResultado(int numeroJuego,  Boolean acierto, int monto) {
-        txtProceRuleta.setText("  Numero aparecido " + numeroJuego + "  |  Apuesta: "+ tipoApuesta() + "  | Monto: "+ getMonto() + "  | Resultado: "+ resultado(acierto)+"  | Total monto: " + monto );
+        if (indiceHistorial <= 100) {
+            String textoInicial = ">" + indiceHistorial + "  Numero aparecido " + numeroJuego + "  |  Apuesta: " + tipoApuesta() + "  | Monto: " + getMonto() + "  | Resultado: " + resultado(acierto) + "  | Total monto: " + monto + "\n";
+            txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
+            indiceHistorial++;
+        }
     };
 }
