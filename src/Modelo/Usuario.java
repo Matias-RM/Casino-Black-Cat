@@ -9,7 +9,7 @@ public class Usuario {
     private int saldo;
 
     public Usuario() {
-        this.username = "Invitado";
+        this.username = "invitado";
         this.password = "";
         this.nombre = "Invitado";
         this.id = 0;
