@@ -9,7 +9,11 @@ public class Usuario {
     private int saldo;
 
     public Usuario() {
-        this("Invitado", "", "Invitado");
+        this.username = "Invitado";
+        this.password = "";
+        this.nombre = "Invitado";
+        this.id = 0;
+        this.saldo = 50000;
     }
 
     public Usuario(String username, String password, String nombre) {
@@ -20,16 +24,18 @@ public class Usuario {
         this.saldo = 0;
     }
     // Verifica si las credenciales ingresadas pertenecen al usuario
-    public boolean validarCredencialess(String u, String p) {
-        return this.username.equals(u) && this.password.equals(p);
+    public boolean validarCredencialess(String nombreUsuario, String contraseña) {
+        return this.username.equals(nombreUsuario) && this.password.equals(contraseña);
     }
 
     public String getNombre() {
         return nombre;
     }
+
     public void setSaldo(int saldo) {
-        this.saldo = saldo;
+        this.saldo = saldo;;
     }
+
     public int getSaldo() {
         return saldo;
     }
