@@ -21,6 +21,7 @@ public class VentanaLogin {
     private final JButton btnIngresar = new JButton("Ingresar");
     private final VentanaRegistro registro = new VentanaRegistro();
     private final JButton btnRegistrar = new JButton("Registrar");
+    private final JButton btnInvitado = new JButton("Invitado");
     private final VentanaMenu ventanaMenu = new VentanaMenu();
     private final Dimension dimensionGeneral = new Dimension(200, 30);
     /**
@@ -31,7 +32,7 @@ public class VentanaLogin {
 // TODO: Agregar los usuarios iniciales a la lista
 // TODO: Inicializar y configurar la ventana
 
-        Usuario usuario = new Usuario("admin", "12345678", "admin");
+        Usuario usuario = new Usuario("admin", "12345678", "admin", 100000);
         USUARIOS.add(usuario);
 
         SwingUtilities.invokeLater(() -> {
@@ -46,6 +47,7 @@ public class VentanaLogin {
             txtClave.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnIngresar.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnRegistrar.setAlignmentX(Component.CENTER_ALIGNMENT);
+            btnInvitado.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             txtUsuario.setPreferredSize(dimensionGeneral);
             txtUsuario.setMaximumSize(dimensionGeneral);
@@ -58,14 +60,29 @@ public class VentanaLogin {
             panelTextos.add(txtClave);
             panelBoton.add(btnIngresar);
             panelBoton.add(btnRegistrar);
-            btnIngresar.addActionListener(e -> login());
-            btnRegistrar.addActionListener(a-> abrirRegistro());
+            panelBoton.add(btnInvitado);
+            btnIngresar.addActionListener(a -> login());
+            btnRegistrar.addActionListener(b -> abrirRegistro());
+            btnInvitado.addActionListener(c -> cuentaInvitado());
 
             panelBoton.setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
             frame.add(panelTextos,  BorderLayout.NORTH);
             frame.add(panelBoton);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
+    }
+
+    private void cerrarVentana() {
+        frame.dispose();
+
+    }
+
+    private void cuentaInvitado() {
+        Usuario usuario = new Usuario();
+        USUARIOS.add(usuario);
+        JOptionPane.showMessageDialog(frame, "¡Cuenta de usuario creada con exito!\nSi desea ingresar nuevamente en esta sesión\ningrese con el nombre: invitado", "Ingreso invitado",  JOptionPane.INFORMATION_MESSAGE);
+        cerrarVentana();
+        ventanaMenu.mostrarVentana();
     }
 
     /**
@@ -96,7 +113,7 @@ public class VentanaLogin {
         } else {
 
             JOptionPane.showMessageDialog(frame, "Bienvenido usuario: " + resultado);
-            frame.dispose();
+            cerrarVentana();
 
             ventanaMenu.mostrarVentana();
         }
@@ -107,17 +124,17 @@ public class VentanaLogin {
     /**
      * Valida las credenciales ingresadas utilizando la lista de usuarios.
      *
-     * @param u nombre de usuario ingresado
-     * @param p contraseña ingresada
+     * @param nombreUsuario nombre de usuario ingresado
+     * @param contraseña contraseña ingresada
      * @return el nombre del usuario si las credenciales son válidas o una cadena vacía
     si no existe una coincidencia
      */
-    private String validarCredenciales(String u, String p) {
+    private String validarCredenciales(String nombreUsuario, String contraseña) {
 // TODO: Recorrer la lista y validar las credenciales
 
-        for (Object o : USUARIOS) {
-            if (((Usuario) o).validarCredencialess(u, p)) {
-                return ((Usuario) o).getNombre();
+        for (Object usuario : USUARIOS) {
+            if (((Usuario) usuario).validarCredencialess(nombreUsuario, contraseña)) {
+                return ((Usuario) usuario).getNombre();
             }
         }
         return "";
@@ -129,7 +146,7 @@ public class VentanaLogin {
     private void abrirRegistro() {
 // TODO: Cerrar la ventana actual y abrir la ventana de registro
 
-        frame.dispose();
+        cerrarVentana();
         registro.mostrarVentanaRegistro();
 
     }
