@@ -1,11 +1,14 @@
 package Vista;
 
 import Modelo.LogicaRuleta;
+import Modelo.TipoApuesta;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class VentanaRuleta {
     private int indiceHistorial = 1;
+    private int indiceBorrarHistorial = 1;
     private final JFrame frame = new JFrame("Ruleta - Casino Black Cat");
     private final JPanel panelLabels = new JPanel();
     private final JPanel panelSeleccion = new JPanel();
@@ -19,9 +22,9 @@ public class VentanaRuleta {
     private final JTextField txtSaldo = new JTextField();
     private final JTextArea txtProceRuleta = new JTextArea(100, 1);
 
-    private final JComboBox<String> comboTipoApuesta = new JComboBox<>();
-    private final JComboBox<String> comboColor = new JComboBox<>();
-    private final JComboBox<String> comboParidad = new JComboBox<>();
+    private final JComboBox<String> comboTipo = new JComboBox<>();
+    private final JComboBox<TipoApuesta> comboColor = new JComboBox<>(TipoApuesta.values());
+    private final JComboBox<TipoApuesta> comboParidad = new JComboBox<>(TipoApuesta.values());
     private final JSpinner spinnerMonto = new JSpinner(new SpinnerNumberModel(0, 0, 5000000, 50));
     private final JButton btnGirar = new JButton("Girar");
 
@@ -32,7 +35,7 @@ public class VentanaRuleta {
 
             frame.setSize(800, 600);
 
-            comboTipoApuesta.setPreferredSize(new Dimension(200, 30));
+            comboTipo.setPreferredSize(new Dimension(200, 30));
             comboColor.setPreferredSize(new Dimension(200, 30));
             comboParidad.setPreferredSize(new Dimension(200, 30));
             txtProceRuleta.setPreferredSize(new Dimension(600, 300));
@@ -44,12 +47,12 @@ public class VentanaRuleta {
             panelLabels.setLayout(new GridLayout(4, 1, 20, 20));
             panelSeleccion.setLayout(new GridLayout(4, 1, 20, 10));
 
-            comboTipoApuesta.addItem("Color");
-            comboTipoApuesta.addItem("Paridad");
-            comboColor.addItem("Rojo");
-            comboColor.addItem("Negro");
-            comboParidad.addItem("Par");
-            comboParidad.addItem("Impar");
+            comboTipo.addItem("Color");
+            comboTipo.addItem("Paridad");
+            comboColor.removeItem(TipoApuesta.Par);
+            comboColor.removeItem(TipoApuesta.Impar);
+            comboParidad.removeItem(TipoApuesta.Rojo);
+            comboParidad.removeItem(TipoApuesta.Negro);
             txtSaldo.setEditable(false);
 
             panelLabels.add(lblTipoApuesta);
@@ -57,7 +60,7 @@ public class VentanaRuleta {
             panelLabels.add(lblParidad);
 
 
-            panelSeleccion.add(comboTipoApuesta);
+            panelSeleccion.add(comboTipo);
             panelSeleccion.add(comboColor);
             panelSeleccion.add(comboParidad);
 
@@ -75,7 +78,7 @@ public class VentanaRuleta {
             panelPrincipalVertical.add(panelBtnGirar);
             panelPrincipalVertical.add(txtProceRuleta);
 
-            comboTipoApuesta.addActionListener(e -> actualizarOpciones());
+            comboTipo.addActionListener(e -> actualizarOpciones());
             btnGirar.addActionListener(e -> iniciarRuleta());
 
             frame.add(panelPrincipalVertical, BorderLayout.NORTH);
@@ -89,7 +92,7 @@ public class VentanaRuleta {
     }
 
     private void actualizarOpciones() {
-        String tipoApuesta = comboTipoApuesta.getSelectedItem().toString();
+        String tipoApuesta = comboTipo.getSelectedItem().toString();
 
         if (tipoApuesta.equals("Color")) {
             comboColor.setEnabled(true);
@@ -117,19 +120,20 @@ public class VentanaRuleta {
      private void iniciarRuleta() {
         LogicaRuleta logica = new LogicaRuleta();
          int numeroJuego = logica.getRandomNum();
-         boolean acierto = logica.evaluarResultado(numeroJuego, comboTipoApuesta.getSelectedItem().toString(), comboColor.getSelectedItem().toString(), comboParidad.getSelectedItem().toString());
+         TipoApuesta tipoApuestaSeleccionada = tipoApuesta();
+         boolean acierto = logica.evaluarResultado(numeroJuego, tipoApuestaSeleccionada);
          int monto = logica.montoAcierto(getMonto(), acierto);
-        imprimirResultado(numeroJuego, acierto, monto);
+         imprimirResultado(numeroJuego, acierto, monto);
 
      }
-    private String tipoApuesta() {
+    private TipoApuesta tipoApuesta() {
         if (comboColor.isEnabled()) {
-            return comboColor.getSelectedItem().toString();
+            return (TipoApuesta) comboColor.getSelectedItem();
         }
         if (comboParidad.isEnabled()) {
-            return comboParidad.getSelectedItem().toString();
+            return (TipoApuesta) comboParidad.getSelectedItem();
         }
-    return "";
+        return null;
     }
     private String resultado(boolean acierto) {
         if  (acierto) {
@@ -139,10 +143,21 @@ public class VentanaRuleta {
         }
     }
     private void imprimirResultado(int numeroJuego,  Boolean acierto, int monto) {
+
         if (indiceHistorial <= 100) {
-            String textoInicial = ">" + indiceHistorial + "  Numero aparecido " + numeroJuego + "  |  Apuesta: " + tipoApuesta() + "  | Monto: " + getMonto() + "  | Resultado: " + resultado(acierto) + "  | Total monto: " + monto + "\n";
+            String textoInicial = ">" + indiceHistorial + "  Numero aparecido " + numeroJuego + "  |  Apuesta: " + tipoApuesta().toString() + "  | Monto: " + getMonto() + "  | Resultado: " + resultado(acierto) + "  | Total monto: " + monto + "\n";
             txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
+            if (indiceHistorial == 23*indiceBorrarHistorial) {
+                borrarHistorial();
+                txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
+                indiceBorrarHistorial++;
+            }
             indiceHistorial++;
         }
-    };
+
+    }
+    private void borrarHistorial() {
+        txtProceRuleta.setText("");
+    }
+
 }
