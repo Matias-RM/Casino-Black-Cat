@@ -28,9 +28,6 @@ public class Usuario {
         return this.username.equals(nombreUsuario) && this.password.equals(contraseña);
     }
 
-    public String getNombre() {
-        return nombre;
-    }
 
     public void setNombre(String nombre) {
         if (nombre == null||nombre.equals("")) {
@@ -39,10 +36,15 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public void setSaldo(int saldo) {
-        this.saldo = saldo;;
+    public void depositar(int monto) {
+        if (monto<=0) {
+            throw  new IllegalArgumentException("El monto debe ser mayor a 0");
+        }
+        this.saldo += monto;
+        }
+    public String getNombre() {
+        return nombre;
     }
-
     public int getSaldo() {
         return saldo;
     }
