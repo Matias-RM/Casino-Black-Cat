@@ -13,15 +13,15 @@ public class Usuario {
         this.password = "";
         this.nombre = "Invitado";
         this.id = 0;
-        this.saldo = 50000;
+        this.saldo = 0;
     }
-
-    public Usuario(String username, String password, String nombre) {
+    // Constructor con parámetros.
+    public Usuario(String username, String password, String nombre, int saldoInicial) {
         this.username = username;
         this.password = password;
-        this.nombre = nombre;
+        setNombre(nombre);
         this.id = contador++;
-        this.saldo = 0;
+        this.saldo = Math.max(saldoInicial, 0);
     }
     // Verifica si las credenciales ingresadas pertenecen al usuario
     public boolean validarCredencialess(String nombreUsuario, String contraseña) {
@@ -30,6 +30,13 @@ public class Usuario {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        if (nombre == null||nombre.equals("")) {
+            throw  new IllegalArgumentException("El nombre es obligatorio");
+        };
+        this.nombre = nombre;
     }
 
     public void setSaldo(int saldo) {
