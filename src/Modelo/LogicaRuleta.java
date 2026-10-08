@@ -1,7 +1,6 @@
 package Modelo;
 
 import java.util.Random;
-import java.util.Scanner;
 
 public class LogicaRuleta {
     private static final int MAX_HISTORIAL = 100;
@@ -16,14 +15,6 @@ public class LogicaRuleta {
             19, 21, 23, 25, 27, 30, 32, 34, 36
     };
     private final int randNum = girarRuleta();
-    private final int saldo;
-
-    public LogicaRuleta(int saldo) {
-        this.saldo = saldo;
-    }
-    public LogicaRuleta() {
-        this.saldo = 0;
-    }
     public int getRandomNum() {
         return randNum;
     }
