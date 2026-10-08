@@ -1,6 +1,6 @@
 package Launcher;
 
-import Modelo.LogicaRuleta;
+import Controlador.SessionController;
 import Vista.VentanaLogin;
 import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
 
@@ -15,10 +15,8 @@ public class Launcher {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-
-        VentanaLogin ventanaLogin = new VentanaLogin();
+        SessionController session = new SessionController();
+        VentanaLogin ventanaLogin = new VentanaLogin(session);
         ventanaLogin.mostrarVentana();
-        LogicaRuleta ruleta = new LogicaRuleta();
-        ruleta.main(args);
     }
 }
