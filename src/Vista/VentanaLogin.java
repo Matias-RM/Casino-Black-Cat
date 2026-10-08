@@ -1,15 +1,11 @@
 package Vista;
-
-import Modelo.Usuario;
+import Controlador.SessionController;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class VentanaLogin {
-    // --- Lista dinámica de usuarios ---
-    public static final List USUARIOS = new ArrayList<>();
+    private SessionController session;
     // --- Componentes de la interfaz gráfica ---
     private final JFrame frame = new JFrame("LogIn - Casino Black Cat");
     private final JPanel panelTextos = new JPanel();
@@ -19,21 +15,21 @@ public class VentanaLogin {
     private final JLabel lblClave = new JLabel("Clave:");
     private final JPasswordField txtClave = new JPasswordField();
     private final JButton btnIngresar = new JButton("Ingresar");
-    private final VentanaRegistro registro = new VentanaRegistro();
+    private final VentanaRegistro registro = new VentanaRegistro(session);
     private final JButton btnRegistrar = new JButton("Registrar");
-    private final VentanaMenu ventanaMenu = new VentanaMenu();
+    private final JButton btnInvitado = new JButton("Invitado");
     private final Dimension dimensionGeneral = new Dimension(200, 30);
     /**
      * Constructor que inicializa la ventana de inicio de sesión.
      * Configura sus componentes y eventos.
      */
-    public VentanaLogin() {
-// TODO: Agregar los usuarios iniciales a la lista
-// TODO: Inicializar y configurar la ventana
+    public VentanaLogin(SessionController session) {
+        this.session = session;
+        iniciarComponentes();
 
-        Usuario usuario = new Usuario("admin", "12345678", "admin");
-        USUARIOS.add(usuario);
+    }
 
+    private void iniciarComponentes() {
         SwingUtilities.invokeLater(() -> {
 
             frame.setSize(800, 600);
@@ -46,6 +42,7 @@ public class VentanaLogin {
             txtClave.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnIngresar.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnRegistrar.setAlignmentX(Component.CENTER_ALIGNMENT);
+            btnInvitado.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             txtUsuario.setPreferredSize(dimensionGeneral);
             txtUsuario.setMaximumSize(dimensionGeneral);
@@ -58,8 +55,10 @@ public class VentanaLogin {
             panelTextos.add(txtClave);
             panelBoton.add(btnIngresar);
             panelBoton.add(btnRegistrar);
-            btnIngresar.addActionListener(e -> login());
-            btnRegistrar.addActionListener(a-> abrirRegistro());
+            panelBoton.add(btnInvitado);
+            btnIngresar.addActionListener(a -> login());
+            btnRegistrar.addActionListener(b -> abrirRegistro());
+            btnInvitado.addActionListener(c -> cuentaInvitado());
 
             panelBoton.setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
             frame.add(panelTextos,  BorderLayout.NORTH);
@@ -68,15 +67,29 @@ public class VentanaLogin {
         });
     }
 
+    private void cerrarVentana() {
+        frame.dispose();
+
+    }
+
+    private void cuentaInvitado() {
+
+        JOptionPane.showMessageDialog(frame, "Ingresando en cuenta de invitado", "Ingreso invitado",  JOptionPane.INFORMATION_MESSAGE);
+        cerrarVentana();
+        session.iniciarInvitado();
+        VentanaMenu ventanaMenu = new VentanaMenu(session);
+
+        ventanaMenu.mostrarVentana();
+    }
+
     /**
      * Muestra la ventana en pantalla.
      * Debe centrarla y hacerla visible.
      */
     public void mostrarVentana() {
-// TODO: Centrar y mostrar la ventana
 
         frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        SwingUtilities.invokeLater(()->frame.setLocationRelativeTo(null));
     }
     /**
      * Gestiona el inicio de sesión al presionar el botón.
@@ -84,52 +97,29 @@ public class VentanaLogin {
      * ventana o mostrar un mensaje de error.
      */
     private void login() {
-// TODO: Implementar la lógica de inicio de sesión
 
         String nombreUsuario = txtUsuario.getText();
-        String claveUsuario = txtClave.getText();
-        String resultado = validarCredenciales(nombreUsuario, claveUsuario);
+        String claveUsuario = new String(txtClave.getPassword());
+        boolean resultado = session.iniciarSesion(nombreUsuario, claveUsuario);
 
-        if (resultado.equals("")) {
-
+        if (!resultado) {
             JOptionPane.showMessageDialog(frame, "Usuario o Clave no valido", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
 
-            JOptionPane.showMessageDialog(frame, "Bienvenido usuario: " + resultado);
-            frame.dispose();
-
+            JOptionPane.showMessageDialog(frame, "Bienvenido usuario: " + session.getNombreUsuario());
+            cerrarVentana();
+            VentanaMenu ventanaMenu = new VentanaMenu(session);
             ventanaMenu.mostrarVentana();
         }
 
-    }
-
-
-    /**
-     * Valida las credenciales ingresadas utilizando la lista de usuarios.
-     *
-     * @param u nombre de usuario ingresado
-     * @param p contraseña ingresada
-     * @return el nombre del usuario si las credenciales son válidas o una cadena vacía
-    si no existe una coincidencia
-     */
-    private String validarCredenciales(String u, String p) {
-// TODO: Recorrer la lista y validar las credenciales
-
-        for (Object o : USUARIOS) {
-            if (((Usuario) o).validarCredencialess(u, p)) {
-                return ((Usuario) o).getNombre();
-            }
-        }
-        return "";
     }
     /**
      * Abre la ventana de registro para crear un nuevo usuario.
      * Debe cerrar la ventana actual e invocar a VentanaRegistro.
      */
     private void abrirRegistro() {
-// TODO: Cerrar la ventana actual y abrir la ventana de registro
 
-        frame.dispose();
+        cerrarVentana();
         registro.mostrarVentanaRegistro();
 
     }
