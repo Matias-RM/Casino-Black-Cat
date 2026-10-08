@@ -1,11 +1,10 @@
 package Vista;
 
-import Modelo.Usuario;
+import Controlador.SessionController;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 public class VentanaRegistro {
-
     private final JFrame frame = new JFrame("SignUp - CasinoBlackCat");
     private final JPanel panel = new JPanel();
     private final JLabel lblNombre = new JLabel("Ingrese su nombre:");
@@ -15,13 +14,18 @@ public class VentanaRegistro {
     private final JLabel lblClave = new JLabel("Clave:");
     private final JPasswordField txtClave = new JPasswordField();
     private final JButton btnCrearCuenta = new JButton("Crear cuenta");
+    private final SessionController session;
 
     /**
      * Constructor que inicializa la ventana de registro.
      * Configura sus componentes y eventos.
      */
-    public VentanaRegistro() {
-//
+    public VentanaRegistro(SessionController session) {
+        this.session = session;
+        iniciarComponentes();
+
+    }
+    private void iniciarComponentes(){
         SwingUtilities.invokeLater(() -> {
 
             frame.setSize(800, 600);
@@ -59,7 +63,6 @@ public class VentanaRegistro {
 
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
-
     }
     /**
      * Muestra la ventana en pantalla.
@@ -75,12 +78,10 @@ public class VentanaRegistro {
     private void signUp() {
 
         if (txtNombre.getText().equals("") || txtUsuario.getText().equals("") || txtClave.getText().equals("")) {
-            JOptionPane.showMessageDialog(frame, "Hay campos vacios, intente nuevamente", "Error", JOptionPane.ERROR_MESSAGE);
 
         } else {
-            VentanaLogin ventanaLogin = new VentanaLogin();
-            Usuario usuario = new Usuario(txtUsuario.getText(), txtClave.getText(), txtNombre.getText());
-            VentanaLogin.USUARIOS.add(usuario);
+            VentanaLogin ventanaLogin = new VentanaLogin(session);
+            session.registrarUsuario(txtUsuario.getText(), txtClave.getText(), txtNombre.getText());
             SwingUtilities.invokeLater(() -> {
                 ventanaLogin.mostrarVentana();
             });
