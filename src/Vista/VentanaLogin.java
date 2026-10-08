@@ -1,15 +1,11 @@
 package Vista;
-
-import Modelo.Usuario;
+import Controlador.SessionController;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class VentanaLogin {
-    // --- Lista dinámica de usuarios ---
-    public static final List USUARIOS = new ArrayList<>();
+    private SessionController session;
     // --- Componentes de la interfaz gráfica ---
     private final JFrame frame = new JFrame("LogIn - Casino Black Cat");
     private final JPanel panelTextos = new JPanel();
@@ -19,22 +15,21 @@ public class VentanaLogin {
     private final JLabel lblClave = new JLabel("Clave:");
     private final JPasswordField txtClave = new JPasswordField();
     private final JButton btnIngresar = new JButton("Ingresar");
-    private final VentanaRegistro registro = new VentanaRegistro();
+    private final VentanaRegistro registro = new VentanaRegistro(session);
     private final JButton btnRegistrar = new JButton("Registrar");
     private final JButton btnInvitado = new JButton("Invitado");
-    private final VentanaMenu ventanaMenu = new VentanaMenu();
     private final Dimension dimensionGeneral = new Dimension(200, 30);
     /**
      * Constructor que inicializa la ventana de inicio de sesión.
      * Configura sus componentes y eventos.
      */
-    public VentanaLogin() {
-// TODO: Agregar los usuarios iniciales a la lista
-// TODO: Inicializar y configurar la ventana
+    public VentanaLogin(SessionController session) {
+        this.session = session;
+        iniciarComponentes();
 
-        Usuario usuario = new Usuario("admin", "12345678", "admin", 100000);
-        USUARIOS.add(usuario);
+    }
 
+    private void iniciarComponentes() {
         SwingUtilities.invokeLater(() -> {
 
             frame.setSize(800, 600);
@@ -78,10 +73,12 @@ public class VentanaLogin {
     }
 
     private void cuentaInvitado() {
-        Usuario usuario = new Usuario();
-        USUARIOS.add(usuario);
-        JOptionPane.showMessageDialog(frame, "¡Cuenta de usuario creada con exito!\nSi desea ingresar nuevamente en esta sesión\ningrese con el nombre: invitado", "Ingreso invitado",  JOptionPane.INFORMATION_MESSAGE);
+
+        JOptionPane.showMessageDialog(frame, "Ingresando en cuenta de invitado", "Ingreso invitado",  JOptionPane.INFORMATION_MESSAGE);
         cerrarVentana();
+        session.iniciarInvitado();
+        VentanaMenu ventanaMenu = new VentanaMenu(session);
+
         ventanaMenu.mostrarVentana();
     }
 
@@ -90,10 +87,9 @@ public class VentanaLogin {
      * Debe centrarla y hacerla visible.
      */
     public void mostrarVentana() {
-// TODO: Centrar y mostrar la ventana
 
         frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        SwingUtilities.invokeLater(()->frame.setLocationRelativeTo(null));
     }
     /**
      * Gestiona el inicio de sesión al presionar el botón.
@@ -101,50 +97,27 @@ public class VentanaLogin {
      * ventana o mostrar un mensaje de error.
      */
     private void login() {
-// TODO: Implementar la lógica de inicio de sesión
 
         String nombreUsuario = txtUsuario.getText();
-        String claveUsuario = txtClave.getText();
-        String resultado = validarCredenciales(nombreUsuario, claveUsuario);
+        String claveUsuario = new String(txtClave.getPassword());
+        boolean resultado = session.iniciarSesion(nombreUsuario, claveUsuario);
 
-        if (resultado.equals("")) {
-
+        if (!resultado) {
             JOptionPane.showMessageDialog(frame, "Usuario o Clave no valido", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
 
-            JOptionPane.showMessageDialog(frame, "Bienvenido usuario: " + resultado);
+            JOptionPane.showMessageDialog(frame, "Bienvenido usuario: " + session.getNombreUsuario());
             cerrarVentana();
-
+            VentanaMenu ventanaMenu = new VentanaMenu(session);
             ventanaMenu.mostrarVentana();
         }
 
-    }
-
-
-    /**
-     * Valida las credenciales ingresadas utilizando la lista de usuarios.
-     *
-     * @param nombreUsuario nombre de usuario ingresado
-     * @param contraseña contraseña ingresada
-     * @return el nombre del usuario si las credenciales son válidas o una cadena vacía
-    si no existe una coincidencia
-     */
-    private String validarCredenciales(String nombreUsuario, String contraseña) {
-// TODO: Recorrer la lista y validar las credenciales
-
-        for (Object usuario : USUARIOS) {
-            if (((Usuario) usuario).validarCredencialess(nombreUsuario, contraseña)) {
-                return ((Usuario) usuario).getNombre();
-            }
-        }
-        return "";
     }
     /**
      * Abre la ventana de registro para crear un nuevo usuario.
      * Debe cerrar la ventana actual e invocar a VentanaRegistro.
      */
     private void abrirRegistro() {
-// TODO: Cerrar la ventana actual y abrir la ventana de registro
 
         cerrarVentana();
         registro.mostrarVentanaRegistro();
