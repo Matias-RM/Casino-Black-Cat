@@ -1,5 +1,6 @@
 package Vista;
 
+import Controlador.SessionController;
 import Modelo.LogicaRuleta;
 import Modelo.TipoApuesta;
 
@@ -7,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class VentanaRuleta {
+    private SessionController session;
     private int indiceHistorial = 1;
     private int indiceBorrarHistorial = 1;
     private final JFrame frame = new JFrame("Ruleta - Casino Black Cat");
@@ -26,21 +28,24 @@ public class VentanaRuleta {
     private final JComboBox<TipoApuesta> comboColor = new JComboBox<>(TipoApuesta.values());
     private final JComboBox<TipoApuesta> comboParidad = new JComboBox<>(TipoApuesta.values());
     private final JSpinner spinnerMonto = new JSpinner(new SpinnerNumberModel(0, 0, 5000000, 50));
-    private final JButton btnGirar = new JButton("Girar");
+    private final JButton btnGirar = new JButton("Girar ruleta");
+    private final JButton btnVolverMenu = new JButton("Volver al menu");
 
 
-    public VentanaRuleta() {
-
+    public VentanaRuleta(SessionController session) {
+     this.session = session;
+     iniciarComponentes();
+    }
+    private void iniciarComponentes() {
         SwingUtilities.invokeLater(() -> {
 
             frame.setSize(800, 600);
-
             comboTipo.setPreferredSize(new Dimension(200, 30));
             comboColor.setPreferredSize(new Dimension(200, 30));
             comboParidad.setPreferredSize(new Dimension(200, 30));
-            txtProceRuleta.setPreferredSize(new Dimension(600, 300));
-            txtProceRuleta.setMaximumSize(new Dimension(600, 300));
-            txtProceRuleta.setMinimumSize(new Dimension(600, 300));
+            txtProceRuleta.setPreferredSize(new Dimension(600, 100));
+            txtProceRuleta.setMaximumSize(new Dimension(600, 100));
+            txtProceRuleta.setMinimumSize(new Dimension(600, 100));
             panelPrincipalVertical.setLayout(new BoxLayout(panelPrincipalVertical, BoxLayout.Y_AXIS));
             panelLabels.setLayout(new BoxLayout(panelLabels, BoxLayout.Y_AXIS));
             panelSeleccion.setLayout(new BoxLayout(panelSeleccion, BoxLayout.Y_AXIS));
@@ -54,11 +59,11 @@ public class VentanaRuleta {
             comboParidad.removeItem(TipoApuesta.Rojo);
             comboParidad.removeItem(TipoApuesta.Negro);
             txtSaldo.setEditable(false);
+            txtSaldo.setText("Saldo: $"+ session.getSaldoUsuario());
 
             panelLabels.add(lblTipoApuesta);
             panelLabels.add(lblColor);
             panelLabels.add(lblParidad);
-
 
             panelSeleccion.add(comboTipo);
             panelSeleccion.add(comboColor);
@@ -68,6 +73,7 @@ public class VentanaRuleta {
             panelBtnGirar.add(spinnerMonto);
             panelBtnGirar.add(btnGirar);
             panelBtnGirar.add(txtSaldo);
+            panelBtnGirar.add(btnVolverMenu);
 
             comboParidad.setEnabled(false);
             panelPrincipalVertical.add(panelPrincipalHorizontal);
@@ -78,17 +84,23 @@ public class VentanaRuleta {
             panelPrincipalVertical.add(panelBtnGirar);
             panelPrincipalVertical.add(txtProceRuleta);
 
+
             comboTipo.addActionListener(e -> actualizarOpciones());
             btnGirar.addActionListener(e -> iniciarRuleta());
-
+            btnVolverMenu.addActionListener(e -> ventanaMenu());
             frame.add(panelPrincipalVertical, BorderLayout.NORTH);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
     }
-
+    private void ventanaMenu() {
+        VentanaMenu ventanaMenu = new VentanaMenu(session);
+        frame.dispose();
+        ventanaMenu.mostrarVentana();
+    }
     public void mostrarVentana() {
-        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        SwingUtilities.invokeLater(() -> {frame.setLocationRelativeTo(null);});
+
     }
 
     private void actualizarOpciones() {
@@ -102,11 +114,6 @@ public class VentanaRuleta {
             comboParidad.setEnabled(true);
             comboColor.setEnabled(false);
         }
-    }
-
-    private void saldoUsuario() {
-        //TODO: este método obtendra el  saldo del usuario.
-
     }
     private int getMonto() {
         try {
