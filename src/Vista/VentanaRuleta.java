@@ -3,6 +3,7 @@ package Vista;
 import Controlador.ResultadoController;
 import Controlador.RuletaController;
 import Controlador.SessionController;
+import Modelo.Resultado;
 import Modelo.TipoApuesta;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ import java.awt.*;
 
 public class VentanaRuleta {
     private SessionController session;
-    private Controlador.ResultadoController resultado;
+    private Controlador.ResultadoController resultadoController;
     private Controlador.RuletaController ruleta;
     private int indiceHistorial = 1;
     private int indiceBorrarHistorial = 1;
@@ -37,7 +38,7 @@ public class VentanaRuleta {
 
     public VentanaRuleta(SessionController session, Controlador.ResultadoController resultado, Controlador.RuletaController ruleta) {
      this.session = session;
-        this.resultado = resultado;
+        this.resultadoController = resultado;
         this.ruleta = ruleta;
         iniciarComponentes();
     }
@@ -137,11 +138,11 @@ public class VentanaRuleta {
         actualizarSaldo();
          int numeroJuego = ruleta.getRandNumb();
          TipoApuesta tipoApuestaSeleccionada = tipoApuesta();
-         boolean acierto = resultado.evaluarResultado(numeroJuego, tipoApuestaSeleccionada);
+         boolean acierto = resultadoController.evaluarResultado(numeroJuego, tipoApuestaSeleccionada);
 
          int monto = getMonto();
-         imprimirResultado(numeroJuego, acierto, monto);
-         ruleta.realizarApuesta(tipoApuesta(),  monto);
+         Resultado resultado = ruleta.realizarApuesta(tipoApuesta(),  monto);
+         imprimirResultado(resultado);
          actualizarSaldo();
 
      }
@@ -161,13 +162,16 @@ public class VentanaRuleta {
             return "Has Perdido";
         }
     }
-    private void imprimirResultado(int numeroJuego,  Boolean acierto, int monto) {
+    private void imprimirResultado(Resultado resultado) {
 
         if (indiceHistorial <= 100) {
-            String textoInicial = ">" + indiceHistorial + "  Numero aparecido " + numeroJuego + "  |  Apuesta: " + tipoApuesta().toString() + "  | Monto: " + getMonto() + "  | Resultado: " + resultado(acierto) + "  | Total monto: " + monto + "\n";
+            //String textoInicial = ">" + indiceHistorial + "  Numero aparecido " + numeroJuego + "  |  Apuesta: " + tipoApuesta().toString() + "  | Monto: " + getMonto() + "  | Resultado: " + resultado(acierto) + "  | Total monto: " + monto + "\n";
+            //txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
+            String textoInicial = "> "+ indiceHistorial + " " + resultado.toString() + "\n";
             txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
             if (indiceHistorial == 23*indiceBorrarHistorial) {
                 borrarHistorial();
+                //txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
                 txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
                 indiceBorrarHistorial++;
             }
