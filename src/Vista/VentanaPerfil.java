@@ -100,7 +100,7 @@ public class VentanaPerfil {
         });
     }
     private void actualizarText() {
-        txtArea.setText("Nombre de Usuario: " + session.getUsernameUsuario() + "\nSaldo: " + session.getSaldoUsuario());
+        txtArea.setText("Nombre de Usuario: " + session.getUsernameUsuario() + "\nSaldo: $" + session.getSaldoUsuario());
     }
     private void cambiarNombreUsuario(String nuevoNombreUsuario) {
         session.setUsernameUsuario(nuevoNombreUsuario);
