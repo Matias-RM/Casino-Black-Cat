@@ -15,7 +15,7 @@ public class VentanaLogin {
     private final JLabel lblClave = new JLabel("Clave:");
     private final JPasswordField txtClave = new JPasswordField();
     private final JButton btnIngresar = new JButton("Ingresar");
-    private final VentanaRegistro registro = new VentanaRegistro(session);
+    private final VentanaRegistro registro = new VentanaRegistro();
     private final JButton btnRegistrar = new JButton("Registrar");
     private final JButton btnInvitado = new JButton("Invitado");
     private final Dimension dimensionGeneral = new Dimension(200, 30);
