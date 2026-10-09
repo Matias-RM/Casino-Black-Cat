@@ -10,7 +10,9 @@ public class SessionController {
     public static final List USUARIOS = new ArrayList<>();
 
     public SessionController() {
-        this.USUARIOS.add(new Usuario("mati", "1234","admin", 50000));
+        this.usuarioActual = new Usuario("admin", "1234","Admin", 50000);
+        this.USUARIOS.add(usuarioActual);
+
     }
 
     // 1. Iniciar sesión tradicional
@@ -42,6 +44,7 @@ public class SessionController {
             throw new IllegalArgumentException("Datos requeridos");
         }
         usuarioActual = new Usuario(usuario, clave, nombre, 0);
+        USUARIOS.add(usuarioActual);
     }
 
 

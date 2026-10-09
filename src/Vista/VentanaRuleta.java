@@ -1,7 +1,8 @@
 package Vista;
 
+import Controlador.ResultadoController;
+import Controlador.RuletaController;
 import Controlador.SessionController;
-import Modelo.LogicaRuleta;
 import Modelo.TipoApuesta;
 
 import javax.swing.*;
@@ -9,6 +10,8 @@ import java.awt.*;
 
 public class VentanaRuleta {
     private SessionController session;
+    private Controlador.ResultadoController resultado;
+    private Controlador.RuletaController ruleta;
     private int indiceHistorial = 1;
     private int indiceBorrarHistorial = 1;
     private final JFrame frame = new JFrame("Ruleta - Casino Black Cat");
@@ -32,9 +35,11 @@ public class VentanaRuleta {
     private final JButton btnVolverMenu = new JButton("Volver al menu");
 
 
-    public VentanaRuleta(SessionController session) {
+    public VentanaRuleta(SessionController session, Controlador.ResultadoController resultado, Controlador.RuletaController ruleta) {
      this.session = session;
-     iniciarComponentes();
+        this.resultado = resultado;
+        this.ruleta = ruleta;
+        iniciarComponentes();
     }
     private void iniciarComponentes() {
         SwingUtilities.invokeLater(() -> {
@@ -59,7 +64,7 @@ public class VentanaRuleta {
             comboParidad.removeItem(TipoApuesta.Rojo);
             comboParidad.removeItem(TipoApuesta.Negro);
             txtSaldo.setEditable(false);
-            txtSaldo.setText("Saldo: $"+ session.getSaldoUsuario());
+
 
             panelLabels.add(lblTipoApuesta);
             panelLabels.add(lblColor);
@@ -74,6 +79,7 @@ public class VentanaRuleta {
             panelBtnGirar.add(btnGirar);
             panelBtnGirar.add(txtSaldo);
             panelBtnGirar.add(btnVolverMenu);
+            actualizarSaldo();
 
             comboParidad.setEnabled(false);
             panelPrincipalVertical.add(panelPrincipalHorizontal);
@@ -91,6 +97,9 @@ public class VentanaRuleta {
             frame.add(panelPrincipalVertical, BorderLayout.NORTH);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
+    }
+    private void actualizarSaldo() {
+        txtSaldo.setText("Saldo: $"+ session.getSaldoUsuario());
     }
     private void ventanaMenu() {
         VentanaMenu ventanaMenu = new VentanaMenu(session);
@@ -125,12 +134,15 @@ public class VentanaRuleta {
         }
     }
      private void iniciarRuleta() {
-        LogicaRuleta logica = new LogicaRuleta();
-         int numeroJuego = logica.getRandomNum();
+        actualizarSaldo();
+         int numeroJuego = ruleta.getRandNumb();
          TipoApuesta tipoApuestaSeleccionada = tipoApuesta();
-         boolean acierto = logica.evaluarResultado(numeroJuego, tipoApuestaSeleccionada);
-         int monto = logica.montoAcierto(getMonto(), acierto);
+         boolean acierto = resultado.evaluarResultado(numeroJuego, tipoApuestaSeleccionada);
+
+         int monto = getMonto();
          imprimirResultado(numeroJuego, acierto, monto);
+         ruleta.realizarApuesta(tipoApuesta(),  monto);
+         actualizarSaldo();
 
      }
     private TipoApuesta tipoApuesta() {

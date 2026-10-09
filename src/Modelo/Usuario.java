@@ -35,6 +35,9 @@ public class Usuario {
         };
         this.nombre = nombre;
     }
+    public void quitarSaldo(int monto){
+        this.saldo -= monto;
+    }
 
     public void depositar(int monto) {
         if (monto<=0) {

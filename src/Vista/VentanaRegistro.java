@@ -14,14 +14,12 @@ public class VentanaRegistro {
     private final JLabel lblClave = new JLabel("Clave:");
     private final JPasswordField txtClave = new JPasswordField();
     private final JButton btnCrearCuenta = new JButton("Crear cuenta");
-    private final SessionController session;
-
+    private SessionController session = new SessionController();
     /**
      * Constructor que inicializa la ventana de registro.
      * Configura sus componentes y eventos.
      */
-    public VentanaRegistro(SessionController session) {
-        this.session = session;
+    public VentanaRegistro() {
         iniciarComponentes();
 
     }
