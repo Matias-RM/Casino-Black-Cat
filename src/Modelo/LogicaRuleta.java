@@ -47,7 +47,7 @@ public class LogicaRuleta {
      *
      * @return número de la ruleta.
      */
-    private int girarRuleta() {
+    public int girarRuleta() {
         return rng.nextInt(CANTIDAD_NUMEROS);
     }
 
@@ -76,7 +76,7 @@ public class LogicaRuleta {
      * @param n número de la ruleta.
      * @return true si es rojo, false en caso contrario.
      */
-    private boolean esRojo(int n) {
+    public boolean esRojo(int n) {
         for (int i = 0; i < numerosRojos.length; i++) {
             if (numerosRojos[i] == n) {
                 return true;
