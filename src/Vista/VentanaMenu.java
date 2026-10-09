@@ -15,7 +15,7 @@ public class VentanaMenu {
     private final JButton btnHistorial = new JButton("Historial");
     private final JButton btnSalir = new JButton("Salir");
     private final JLabel textArea = new JLabel("RULETA - Casino Black Cat");
-    private final JTextArea textAreaInfo = new JTextArea("Bienvenido/a al menú principal \nA la izquierda tienes:\n -Jugar: abre la ventana de juego\n -Recargar: abre una ventana para que recarges saldo \n -Historial: abre la ventana de historial\n- Salir: cierra sesion y vuelve al login.");
+    private final JTextArea textAreaInfo = new JTextArea();
     private final JButton btnPerfil = new JButton("Perfil");
     public VentanaMenu(SessionController session) {
         this.session = session;
@@ -37,6 +37,7 @@ public class VentanaMenu {
             btnHistorial.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnPerfil.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnSalir.setAlignmentX(Component.CENTER_ALIGNMENT);
+            actualizartexto();
 
             panelBotones.add(btnInicio);
             panelBotones.add(btnJugar);
@@ -59,6 +60,9 @@ public class VentanaMenu {
 
 
         });
+    }
+    private void actualizartexto() {
+        textAreaInfo.setText("Bienvenido/a al menú principal \nA la izquierda tienes:\n -Jugar: abre la ventana de juego\n -Recargar: abre una ventana para que recarges saldo \n -Historial: abre la ventana de historial\n- Salir: cierra sesion y vuelve al login.\n\n\nSaldo: $" + session.getSaldoUsuario());
     }
     private void verPerfil() {
         VentanaPerfil ventanaperfil = new VentanaPerfil(session);
