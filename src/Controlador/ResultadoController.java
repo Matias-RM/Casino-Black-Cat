@@ -3,16 +3,14 @@ package Controlador;
 import Modelo.LogicaRuleta;
 import Modelo.Resultado;
 import Modelo.TipoApuesta;
-
-import java.util.ArrayList;
-import java.util.List;
+import Modelo.Usuario;
 
 public class ResultadoController {
     private LogicaRuleta logica;
-    private List<Resultado> historialResultados;
+    private SessionController session;
 
-    public ResultadoController() {
-        this.historialResultados = new ArrayList<>();
+    public ResultadoController(SessionController session) {
+        this.session = session;
     }
     //TODO: Agregar caso de color Verde
     public boolean evaluarResultado(int numero, TipoApuesta tipoApuesta) {
@@ -25,36 +23,19 @@ public class ResultadoController {
             case Impar -> numero % 2 != 0;
         };
     }
-    public int montoAcierto(int monto,boolean acierto){
-        if (acierto){
-            monto = monto * 2;
-            return monto;
-        } else {
-            return 1;
-        }
-    }
-
-    public void registrarResultado(Resultado resultado) {
-        this.historialResultados.add(resultado);
-    }
-
-    public List<Resultado> getHistorial() {
-        return historialResultados;
-    }
-
-    public int getCantidadPartidas() {
-        return historialResultados.size();
+    public void registrarResultado(Usuario usuario, Resultado resultado) {
+        session.getUsuarioActual().getHistorialResultados().add(resultado);
     }
 
     public int getVictoriasTotales() {
         int victorias = 0;
-        for (Resultado r : historialResultados) {
-            if (r.isEsGanador()) victorias++;
+        for (Resultado usuario : session.getUsuarioActual().getHistorialResultados()) {
+            if (usuario.EsGanador()) victorias++;
         }
         return victorias;
     }
 
     public void limpiarHistorial() {
-        this.historialResultados.clear();
+        session.getUsuarioActual().getHistorialResultados().clear();
     }
 }
