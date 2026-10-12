@@ -7,12 +7,12 @@ import Modelo.Usuario;
 public class RuletaController {
 
     private LogicaRuleta ruleta;
-    private SessionController sessionController;
+    private SessionController session;
     private Controlador.ResultadoController resultadoController;
 
     public RuletaController(SessionController sessionController, Controlador.ResultadoController resultadoController) {
             this.ruleta = new LogicaRuleta();
-            this.sessionController = sessionController;
+            this.session = sessionController;
             this.resultadoController = resultadoController;
         }
         public int getRandNumb() {
@@ -20,7 +20,7 @@ public class RuletaController {
         }
 
         public Resultado realizarApuesta(TipoApuesta tipo, int monto) {
-            Usuario usuario = sessionController.getUsuarioActual();
+            Usuario usuario = session.getUsuarioActual();
 
             if (monto <= 0) {
                 throw new IllegalArgumentException("El monto apostado debe ser mayor a 0");
@@ -34,16 +34,18 @@ public class RuletaController {
 
             if (gano) {
                 int ganancia = monto * 2;
-                usuario.depositar(monto);
-                return new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
+                usuario.depositar(ganancia);
+                Resultado resultado = new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
+                resultadoController.registrarResultado(session.getUsuarioActual(), resultado );
+                return resultado;
             } else {
                 int ganancia = 0;
                 usuario.quitarSaldo(monto);
-                return new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
+                Resultado resultado = new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
+                resultadoController.registrarResultado(session.getUsuarioActual(), resultado );
+                return resultado;
 
 
             }
-            //resultadoController.registrarResultado(resultado);
-            //return resultado;
         }
     }
