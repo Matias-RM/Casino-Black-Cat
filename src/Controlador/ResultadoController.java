@@ -3,7 +3,8 @@ package Controlador;
 import Modelo.LogicaRuleta;
 import Modelo.Resultado;
 import Modelo.TipoApuesta;
-import Modelo.Usuario;
+
+import java.util.List;
 
 public class ResultadoController {
     private LogicaRuleta logica;
@@ -23,7 +24,11 @@ public class ResultadoController {
             case Impar -> numero % 2 != 0;
         };
     }
-    public void registrarResultado(Usuario usuario, Resultado resultado) {
+
+    public List<Resultado> getHistorialResultados(){
+        return session.getHistorialResultados();
+    }
+    public void registrarResultado(Resultado resultado) {
         session.getUsuarioActual().getHistorialResultados().add(resultado);
     }
 
