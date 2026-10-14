@@ -142,6 +142,7 @@ public class VentanaRuleta {
          Resultado resultado = ruleta.realizarApuesta(tipoApuesta(),  monto);
          imprimirResultado(resultado);
          actualizarSaldo();
+         guardarResultados(resultado);
 
      }
     private TipoApuesta tipoApuesta() {
@@ -153,12 +154,9 @@ public class VentanaRuleta {
         }
         return null;
     }
-    private String resultado(boolean acierto) {
-        if  (acierto) {
-            return "¡¡Has Ganado!!";
-        } else {
-            return "Has Perdido";
-        }
+
+    private void guardarResultados(Resultado resultados) {
+        resultadoController.registrarResultado(resultados);
     }
     private void imprimirResultado(Resultado resultado) {
         if (indiceHistorial <= 100) {
