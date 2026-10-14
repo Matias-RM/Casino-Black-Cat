@@ -13,8 +13,10 @@ public class VentanaHistorial {
     private final JFrame frame = new JFrame("Historial de Resultados");
     private final JPanel panelVertical = new JPanel();
     private final JPanel panelHorizontal = new JPanel();
-    private final JTextArea txtNombreUsuario = new JTextArea();
+    private final JTextPane txtNombreUsuario = new JTextPane();
     private final JTextArea txtAreaHistorial = new JTextArea();
+    private final JScrollPane scrollHistorial = new JScrollPane(txtAreaHistorial);
+    private final JButton btnVolver = new JButton("Volver");
     public VentanaHistorial(SessionController session) {
         this.session = session;
         iniciarComponentes();
@@ -25,26 +27,50 @@ public class VentanaHistorial {
 
             panelVertical.setLayout(new BoxLayout(panelVertical, BoxLayout.Y_AXIS));
 
-
-            txtAreaHistorial.setMinimumSize(new Dimension(100, 100));
-            txtAreaHistorial.setPreferredSize(new Dimension(100, 100));
-            txtAreaHistorial.setMaximumSize(new Dimension(100, 100));
+            scrollHistorial.setMinimumSize(new Dimension(600, 500));
+            scrollHistorial.setPreferredSize(new Dimension(600, 500));
+            scrollHistorial.setMaximumSize(new Dimension(600, 500));
+            txtAreaHistorial.setLineWrap(true);
+            txtAreaHistorial.setWrapStyleWord(true);
+            scrollHistorial.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollHistorial.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 
             panelVertical.setAlignmentX(Component.CENTER_ALIGNMENT);
+            txtNombreUsuario.setAlignmentX(Component.CENTER_ALIGNMENT);
             txtAreaHistorial.setAlignmentX(Component.CENTER_ALIGNMENT);
+            btnVolver.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             txtAreaHistorial.setEditable(false);
-            panelVertical.setBackground(Color.GREEN);
             actualizarText();
-            panelVertical.add(txtAreaHistorial);
-            frame.add(panelVertical);
+
+            txtNombreUsuario.setEditable(false);
+            txtNombreUsuario.setFont(new Font("Arial", Font.BOLD, 20));
+            txtNombreUsuario.setFocusable(false);
+            txtAreaHistorial.setFocusable(false);
+
+            panelVertical.add(txtNombreUsuario);
+            panelVertical.add(scrollHistorial);
+            panelHorizontal.add(panelVertical);
+            panelHorizontal.add(btnVolver);
+
+            btnVolver.addActionListener(e -> {irMenu();});
+
+            frame.add(panelHorizontal);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
     }
+
+    private void irMenu(){
+        VentanaMenu ventanaMenu = new VentanaMenu(session);
+        frame.dispose();
+        ventanaMenu.mostrarVentana();
+    }
     private void actualizarText(){
-        txtNombreUsuario.setText(txtNombreUsuario.getText());
-        txtAreaHistorial.setText(txtAreaHistorial.getText());
+        txtNombreUsuario.setText("                                      Historial de " + session.getNombreUsuario() + "\n");
+        for (int i = 0; i < session.getHistorialResultados().size(); i++) {
+            txtAreaHistorial.setText(txtAreaHistorial.getText() + "\n" + resultado.getHistorialResultados().get(i).toString());
+        }
     }
     public void mostrarVentana(){
         frame.setVisible(true);
