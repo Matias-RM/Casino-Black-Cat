@@ -8,7 +8,6 @@ import java.awt.*;
 
 public class VentanaHistorial {
     SessionController session;
-    ResultadoController resultado;
 
     private final JFrame frame = new JFrame("Historial de Resultados");
     private final JPanel panelVertical = new JPanel();
@@ -67,8 +66,10 @@ public class VentanaHistorial {
         ventanaMenu.mostrarVentana();
     }
     private void actualizarText(){
+        ResultadoController resultado = new ResultadoController(session);
+
         txtNombreUsuario.setText("                                      Historial de " + session.getNombreUsuario() + "\n");
-        for (int i = 0; i < session.getHistorialResultados().size(); i++) {
+        for (int i = 0; i < resultado.getHistorialResultados().size(); i++) {
             txtAreaHistorial.setText(txtAreaHistorial.getText() + "\n" + resultado.getHistorialResultados().get(i).toString());
         }
     }
