@@ -1,7 +1,6 @@
 package Vista;
 
-import Controlador.ResultadoController;
-import Controlador.RuletaController;
+
 import Controlador.SessionController;
 import Modelo.Resultado;
 import Modelo.TipoApuesta;
@@ -110,7 +109,6 @@ public class VentanaRuleta {
     public void mostrarVentana() {
         frame.setVisible(true);
         SwingUtilities.invokeLater(() -> {frame.setLocationRelativeTo(null);});
-
     }
 
     private void actualizarOpciones() {
@@ -163,15 +161,12 @@ public class VentanaRuleta {
         }
     }
     private void imprimirResultado(Resultado resultado) {
-
         if (indiceHistorial <= 100) {
-            //String textoInicial = ">" + indiceHistorial + "  Numero aparecido " + numeroJuego + "  |  Apuesta: " + tipoApuesta().toString() + "  | Monto: " + getMonto() + "  | Resultado: " + resultado(acierto) + "  | Total monto: " + monto + "\n";
-            //txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
+
             String textoInicial = "> "+ indiceHistorial + " " + resultado.toString() + "\n";
             txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
             if (indiceHistorial == 23*indiceBorrarHistorial) {
                 borrarHistorial();
-                //txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
                 txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
                 indiceBorrarHistorial++;
             }
