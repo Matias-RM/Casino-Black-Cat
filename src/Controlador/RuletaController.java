@@ -30,19 +30,19 @@ public class RuletaController {
             }
 
             int numeroObtenido = getRandNumb();
-            boolean gano = ruleta.evaluarResultado(numeroObtenido, tipo);
+            boolean gano = resultadoController.evaluarResultado(numeroObtenido, tipo);
 
             if (gano) {
                 int ganancia = monto * 2;
                 usuario.depositar(ganancia);
                 Resultado resultado = new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
-                resultadoController.registrarResultado(session.getUsuarioActual(), resultado );
+                resultadoController.registrarResultado(resultado);
                 return resultado;
             } else {
                 int ganancia = 0;
                 usuario.quitarSaldo(monto);
                 Resultado resultado = new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
-                resultadoController.registrarResultado(session.getUsuarioActual(), resultado );
+                resultadoController.registrarResultado(resultado);
                 return resultado;
 
 
