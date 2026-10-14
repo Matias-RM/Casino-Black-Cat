@@ -34,7 +34,10 @@ public class Usuario {
         return this.username.equals(nombreUsuario) && this.password.equals(contraseña);
     }
     public List<Resultado> getHistorialResultados() {
-        return historialResultados;
+        return this.historialResultados;
+    }
+    public void agregarResultados(Resultado resultado) {
+        this.historialResultados.add(resultado);
     }
 
 
