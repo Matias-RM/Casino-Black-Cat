@@ -16,7 +16,7 @@ public class VentanaMenu {
     private final JButton btnJugar = new JButton("Jugar");
     private final JButton btnHistorial = new JButton("Historial");
     private final JButton btnSalir = new JButton("Salir");
-    private final JLabel textArea = new JLabel("RULETA - Casino Black Cat");
+    private final JLabel textAreaTitulo = new JLabel("RULETA - Casino Black Cat");
     private final JTextArea textAreaInfo = new JTextArea();
     private final JButton btnPerfil = new JButton("Perfil");
     public VentanaMenu(SessionController session) {
@@ -46,9 +46,9 @@ public class VentanaMenu {
             panelBotones.add(btnPerfil);
             panelBotones.add(btnHistorial);
             panelBotones.add(btnSalir);
-            textArea.setAlignmentX(Component.LEFT_ALIGNMENT);
+            textAreaTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
             textAreaInfo.setEditable(false);
-            panelInfo.add(textArea);
+            panelInfo.add(textAreaTitulo);
             panelInfo.add(textAreaInfo);
 
             frame.add(panelBotones,BorderLayout.WEST);
@@ -58,6 +58,7 @@ public class VentanaMenu {
             btnInicio.addActionListener(a -> irIngreso());
             btnJugar.addActionListener(e ->irRuleta());
             btnPerfil.addActionListener(e -> verPerfil());
+            btnHistorial.addActionListener(e -> {irHistorial();});
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
@@ -72,13 +73,18 @@ public class VentanaMenu {
         ventanaperfil.mostrarVentana();
     }
 
+    private void irHistorial() {
+        VentanaHistorial ventanaHistorial = new VentanaHistorial(session);
+        frame.dispose();
+        ventanaHistorial.mostrarVentana();
+    }
     public void mostrarVentana() {
         frame.setVisible(true);
         SwingUtilities.invokeLater(()-> {frame.setLocationRelativeTo(null);});
 
     }
     private void irRuleta() {
-        ResultadoController resultado = new ResultadoController();
+        ResultadoController resultado = new ResultadoController(session);
         RuletaController ruleta = new RuletaController(session,  resultado);
         VentanaRuleta ventanaRuleta =  new VentanaRuleta(session, resultado, ruleta);
         frame.dispose();
