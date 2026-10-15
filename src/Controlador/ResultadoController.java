@@ -37,14 +37,14 @@ public class ResultadoController {
     public void registrarResultado(Resultado resultado) {
         session.getUsuarioActual().agregarResultados(resultado);
     }
-    public void gananciaTotal(){
+    private void gananciaTotal(){
         for (Resultado resultado : session.getUsuarioActual().getHistorialResultados()) {
             if (resultado.EsGanador()){
                 this.ganancia += resultado.getMontoGanado();
             }
         }
     }
-    public void montoApostadoTotal(){
+    private void montoApostadoTotal(){
         for (Resultado resultado : session.getUsuarioActual().getHistorialResultados()) {
             this.montoApostado += resultado.getMontoApostado();
         }
