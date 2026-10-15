@@ -1,6 +1,8 @@
 package Vista;
 
 
+import Controlador.ResultadoController;
+import Controlador.RuletaController;
 import Controlador.SessionController;
 import Modelo.Resultado;
 import Modelo.TipoApuesta;
@@ -10,8 +12,8 @@ import java.awt.*;
 
 public class VentanaRuleta {
     private SessionController session;
-    private Controlador.ResultadoController resultadoController;
-    private Controlador.RuletaController ruleta;
+    private ResultadoController resultadoController;
+    private RuletaController ruletaController;
     private int indiceHistorial = 1;
     private int indiceBorrarHistorial = 1;
     private final JFrame frame = new JFrame("Ruleta - Casino Black Cat");
@@ -35,11 +37,11 @@ public class VentanaRuleta {
     private final JButton btnVolverMenu = new JButton("Volver al menu");
 
 
-    public VentanaRuleta(SessionController session, Controlador.ResultadoController resultado, Controlador.RuletaController ruleta) {
+    public VentanaRuleta(SessionController session) {
      this.session = session;
-        this.resultadoController = resultado;
-        this.ruleta = ruleta;
-        iniciarComponentes();
+     this.resultadoController = new ResultadoController(session);
+     this.ruletaController = new RuletaController(session);
+     iniciarComponentes();
     }
     private void iniciarComponentes() {
         SwingUtilities.invokeLater(() -> {
@@ -134,15 +136,10 @@ public class VentanaRuleta {
     }
      private void iniciarRuleta() {
         actualizarSaldo();
-         int numeroJuego = ruleta.getRandNumb();
-         TipoApuesta tipoApuestaSeleccionada = tipoApuesta();
-         boolean acierto = resultadoController.evaluarResultado(numeroJuego, tipoApuestaSeleccionada);
 
-         int monto = getMonto();
-         Resultado resultado = ruleta.realizarApuesta(tipoApuesta(),  monto);
+         Resultado resultado = ruletaController.realizarApuesta(tipoApuesta(),  getMonto());
          imprimirResultado(resultado);
          actualizarSaldo();
-         guardarResultados(resultado);
 
      }
     private TipoApuesta tipoApuesta() {
@@ -154,23 +151,17 @@ public class VentanaRuleta {
         }
         return null;
     }
-
-    private void guardarResultados(Resultado resultados) {
-        resultadoController.registrarResultado(resultados);
-    }
-    private void imprimirResultado(Resultado resultado) {
-        if (indiceHistorial <= 100) {
-
-            String textoInicial = "> "+ indiceHistorial + " " + resultado.toString() + "\n";
-            txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
-            if (indiceHistorial == 23*indiceBorrarHistorial) {
-                borrarHistorial();
-                txtProceRuleta.setText(txtProceRuleta.getText() + textoInicial);
-                indiceBorrarHistorial++;
-            }
+    private void imprimirResultado(Resultado resultado){
+        if (indiceHistorial <= resultadoController.getHistorialResultados().size()){
+            String textoInicial = "> " + indiceHistorial + " | " + resultado.toString();
+            txtProceRuleta.setText(txtProceRuleta.getText() +"\n" + textoInicial);
             indiceHistorial++;
+            if (indiceHistorial == 23*indiceBorrarHistorial) {
+             borrarHistorial();
+             txtProceRuleta.setText(txtProceRuleta.getText() +"\n" + textoInicial);
+             indiceBorrarHistorial++;
+         }
         }
-
     }
     private void borrarHistorial() {
         txtProceRuleta.setText("");
