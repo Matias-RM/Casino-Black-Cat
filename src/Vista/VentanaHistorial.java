@@ -41,7 +41,7 @@ public class VentanaHistorial {
             btnVolver.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             txtAreaHistorial.setEditable(false);
-            actualizarText();
+            TextoHistorial();
 
             txtNombreUsuario.setEditable(false);
             txtNombreUsuario.setFont(new Font("Arial", Font.BOLD, 20));
@@ -65,16 +65,32 @@ public class VentanaHistorial {
         frame.dispose();
         ventanaMenu.mostrarVentana();
     }
-    private void actualizarText(){
+    private void TextoHistorial(){
+        txtNombreUsuario.setText("                                      " +
+                "Historial de " + session.getNombreUsuario() +
+                "\n Victorias: " + numVictorias() + "  Dinero Obtenido: $" + ganancias()+ "  Total Apostado: $" + montoApostado());
         ResultadoController resultado = new ResultadoController(session);
 
-        txtNombreUsuario.setText("                                      Historial de " + session.getNombreUsuario() + "\n");
         for (int i = 0; i < resultado.getHistorialResultados().size(); i++) {
-            txtAreaHistorial.setText(txtAreaHistorial.getText() + "\n" + resultado.getHistorialResultados().get(i).toString());
+            String textoHistorial = "\n" + resultado.getHistorialResultados().get(i).toString();
+            txtAreaHistorial.append(textoHistorial);
         }
     }
+    private int numVictorias(){
+        ResultadoController resultado = new ResultadoController(session);
+        return resultado.getVictoriasTotales();
+    }
+
     public void mostrarVentana(){
         frame.setVisible(true);
         SwingUtilities.invokeLater(()-> {frame.setLocationRelativeTo(null);});
+    }
+    private int ganancias(){
+        ResultadoController resultado = new ResultadoController(session);
+        return resultado.getGanancia();
+    }
+    private int montoApostado(){
+        ResultadoController resultado = new ResultadoController(session);
+        return resultado.getMontoApostado();
     }
 }
