@@ -8,12 +8,10 @@ public class RuletaController {
 
     private LogicaRuleta ruleta;
     private SessionController session;
-    private Controlador.ResultadoController resultadoController;
 
-    public RuletaController(SessionController sessionController, Controlador.ResultadoController resultadoController) {
+    public RuletaController(SessionController sessionController) {
             this.ruleta = new LogicaRuleta();
             this.session = sessionController;
-            this.resultadoController = resultadoController;
         }
         public int getRandNumb() {
         return ruleta.girarRuleta();
@@ -21,7 +19,8 @@ public class RuletaController {
 
         public Resultado realizarApuesta(TipoApuesta tipo, int monto) {
             Usuario usuario = session.getUsuarioActual();
-
+            ResultadoController resultadoController = new ResultadoController(session);
+            usuario.quitarSaldo(monto);
             if (monto <= 0) {
                 throw new IllegalArgumentException("El monto apostado debe ser mayor a 0");
             }
@@ -32,15 +31,14 @@ public class RuletaController {
             int numeroObtenido = getRandNumb();
             boolean gano = resultadoController.evaluarResultado(numeroObtenido, tipo);
 
-            if (gano) {
-                int ganancia = monto * 2;
-                usuario.depositar(ganancia);
+            if (!gano) {
+                int ganancia = 0;
                 Resultado resultado = new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
                 resultadoController.registrarResultado(resultado);
                 return resultado;
             } else {
-                int ganancia = 0;
-                usuario.quitarSaldo(monto);
+                int ganancia = monto * 2;
+                usuario.depositar(ganancia);
                 Resultado resultado = new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
                 resultadoController.registrarResultado(resultado);
                 return resultado;
