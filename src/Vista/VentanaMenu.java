@@ -71,9 +71,9 @@ public class VentanaMenu {
         textAreaInfo.setText("Bienvenido/a al menú principal \nA la izquierda tienes:\n -Jugar: abre la ventana de juego\n -Recargar: abre una ventana para que recarges saldo \n -Historial: abre la ventana de historial\n- Salir: cierra sesion y vuelve al login.\n\n\nSaldo: $" + session.getSaldoUsuario());
     }
     private void verPerfil() {
-        VentanaPerfil ventanaperfil = new VentanaPerfil(session);
+        VentanaPerfil ventanaPerfil = new VentanaPerfil(session);
         frame.dispose();
-        ventanaperfil.mostrarVentana();
+        ventanaPerfil.mostrarVentana();
     }
 
     private void irHistorial() {
