@@ -55,7 +55,9 @@ public class SessionController {
       return (usuarioActual !=null) ? usuarioActual.getNombre() : "Invitado";
     };
     public String getUsernameUsuario() {return usuarioActual.getUsername();}
-    public String setUsernameUsuario(String usuario) {return this.usuarioActual.setUsername(usuario);}
+    public void setUsernameUsuario(String usuario) {
+        this.usuarioActual.setUsername(usuario);
+    }
     public int getSaldoUsuario() {
         return (usuarioActual !=null) ? usuarioActual.getSaldo() : 0;
     }

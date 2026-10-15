@@ -7,21 +7,20 @@ import Modelo.Usuario;
 public class RuletaController {
 
     private LogicaRuleta ruleta;
-    private SessionController sessionController;
-    private Controlador.ResultadoController resultadoController;
+    private SessionController session;
 
-    public RuletaController(SessionController sessionController, Controlador.ResultadoController resultadoController) {
+    public RuletaController(SessionController sessionController) {
             this.ruleta = new LogicaRuleta();
-            this.sessionController = sessionController;
-            this.resultadoController = resultadoController;
+            this.session = sessionController;
         }
         public int getRandNumb() {
         return ruleta.girarRuleta();
         }
 
         public Resultado realizarApuesta(TipoApuesta tipo, int monto) {
-            Usuario usuario = sessionController.getUsuarioActual();
-
+            Usuario usuario = session.getUsuarioActual();
+            ResultadoController resultadoController = new ResultadoController(session);
+            usuario.quitarSaldo(monto);
             if (monto <= 0) {
                 throw new IllegalArgumentException("El monto apostado debe ser mayor a 0");
             }
@@ -30,20 +29,21 @@ public class RuletaController {
             }
 
             int numeroObtenido = getRandNumb();
-            boolean gano = ruleta.evaluarResultado(numeroObtenido, tipo);
+            boolean gano = resultadoController.evaluarResultado(numeroObtenido, tipo);
 
-            if (gano) {
-                int ganancia = monto * 2;
-                usuario.depositar(monto);
-                return new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
-            } else {
+            if (!gano) {
                 int ganancia = 0;
-                usuario.quitarSaldo(monto);
-                return new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
+                Resultado resultado = new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
+                resultadoController.registrarResultado(resultado);
+                return resultado;
+            } else {
+                int ganancia = monto * 2;
+                usuario.depositar(ganancia);
+                Resultado resultado = new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
+                resultadoController.registrarResultado(resultado);
+                return resultado;
 
 
             }
-            //resultadoController.registrarResultado(resultado);
-            //return resultado;
         }
     }

@@ -40,6 +40,7 @@ public class VentanaPerfil {
             txtArea.setOpaque(false);
             txtArea.setBorder(null);
             txtArea.setFont(txtArea.getFont().deriveFont(Font.PLAIN, 16f));
+            txtArea.setFocusable(false);
             txtArea.setLineWrap(true);
             txtArea.setWrapStyleWord(true);
             actualizarText();
@@ -73,7 +74,7 @@ public class VentanaPerfil {
             panelBotones.add(Box.createVerticalGlue());
 
             frame.add(panelDatosUsuario, BorderLayout.CENTER);
-            frame.add(panelBotones,      BorderLayout.EAST);
+            frame.add(panelBotones, BorderLayout.EAST);
 
             btnCambiarNombre.addActionListener(e -> {
                 cambiarNombreUsuario(mensajeInputUsername());

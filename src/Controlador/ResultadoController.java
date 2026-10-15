@@ -4,15 +4,20 @@ import Modelo.LogicaRuleta;
 import Modelo.Resultado;
 import Modelo.TipoApuesta;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ResultadoController {
     private LogicaRuleta logica;
-    private List<Resultado> historialResultados;
+    private SessionController session;
+    private int ganancia;
+    private int montoApostado;
 
-    public ResultadoController() {
-        this.historialResultados = new ArrayList<>();
+    public ResultadoController(SessionController session) {
+        this.session = session;
+        this.ganancia = 0;
+        this.montoApostado = 0;
+        gananciaTotal();
+        montoApostadoTotal();
     }
     //TODO: Agregar caso de color Verde
     public boolean evaluarResultado(int numero, TipoApuesta tipoApuesta) {
@@ -25,36 +30,37 @@ public class ResultadoController {
             case Impar -> numero % 2 != 0;
         };
     }
-    public int montoAcierto(int monto,boolean acierto){
-        if (acierto){
-            monto = monto * 2;
-            return monto;
-        } else {
-            return 1;
+
+    public List<Resultado> getHistorialResultados(){
+        return session.getUsuarioActual().getHistorialResultados();
+    }
+    public void registrarResultado(Resultado resultado) {
+        session.getUsuarioActual().agregarResultados(resultado);
+    }
+    private void gananciaTotal(){
+        for (Resultado resultado : session.getUsuarioActual().getHistorialResultados()) {
+            if (resultado.EsGanador()){
+                this.ganancia += resultado.getMontoGanado();
+            }
         }
     }
-
-    public void registrarResultado(Resultado resultado) {
-        this.historialResultados.add(resultado);
+    private void montoApostadoTotal(){
+        for (Resultado resultado : session.getUsuarioActual().getHistorialResultados()) {
+            this.montoApostado += resultado.getMontoApostado();
+        }
     }
-
-    public List<Resultado> getHistorial() {
-        return historialResultados;
+    public int getMontoApostado() {
+        return montoApostado;
     }
-
-    public int getCantidadPartidas() {
-        return historialResultados.size();
+    public int  getGanancia(){
+        return this.ganancia;
     }
 
     public int getVictoriasTotales() {
         int victorias = 0;
-        for (Resultado r : historialResultados) {
-            if (r.isEsGanador()) victorias++;
+        for (Resultado resultado : session.getUsuarioActual().getHistorialResultados()) {
+            if (resultado.EsGanador()) victorias++;
         }
         return victorias;
-    }
-
-    public void limpiarHistorial() {
-        this.historialResultados.clear();
     }
 }

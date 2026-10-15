@@ -1,8 +1,7 @@
 package Vista;
 
 import Controlador.SessionController;
-import Controlador.ResultadoController;
-import Controlador.RuletaController;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -16,7 +15,7 @@ public class VentanaMenu {
     private final JButton btnJugar = new JButton("Jugar");
     private final JButton btnHistorial = new JButton("Historial");
     private final JButton btnSalir = new JButton("Salir");
-    private final JLabel textArea = new JLabel("RULETA - Casino Black Cat");
+    private final JLabel textAreaTitulo = new JLabel("RULETA - Casino Black Cat");
     private final JTextArea textAreaInfo = new JTextArea();
     private final JButton btnPerfil = new JButton("Perfil");
     public VentanaMenu(SessionController session) {
@@ -27,7 +26,7 @@ public class VentanaMenu {
     private void iniciarComponentes() {
 
         SwingUtilities.invokeLater(()-> {
-            frame.setTitle("Menú - Casino Black Cat **" + session.getUsuarioActual().getNombre()+"**");
+            frame.setTitle("Menú - Casino Black Cat * " + session.getUsuarioActual().getNombre()+" *");
             frame.setSize(800,600);
             panelBotones.setLayout(new BoxLayout(panelBotones,BoxLayout.Y_AXIS));
             panelBotones.setBorder(new EmptyBorder(2,10,2,10));
@@ -46,9 +45,9 @@ public class VentanaMenu {
             panelBotones.add(btnPerfil);
             panelBotones.add(btnHistorial);
             panelBotones.add(btnSalir);
-            textArea.setAlignmentX(Component.LEFT_ALIGNMENT);
+            textAreaTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
             textAreaInfo.setEditable(false);
-            panelInfo.add(textArea);
+            panelInfo.add(textAreaTitulo);
             panelInfo.add(textAreaInfo);
 
             frame.add(panelBotones,BorderLayout.WEST);
@@ -58,29 +57,37 @@ public class VentanaMenu {
             btnInicio.addActionListener(a -> irIngreso());
             btnJugar.addActionListener(e ->irRuleta());
             btnPerfil.addActionListener(e -> verPerfil());
+            btnHistorial.addActionListener(e -> irHistorial());
+            btnSalir.addActionListener(e -> salir());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
         });
     }
+    private void salir(){
+        frame.dispose();
+    }
     private void actualizartexto() {
         textAreaInfo.setText("Bienvenido/a al menú principal \nA la izquierda tienes:\n -Jugar: abre la ventana de juego\n -Recargar: abre una ventana para que recarges saldo \n -Historial: abre la ventana de historial\n- Salir: cierra sesion y vuelve al login.\n\n\nSaldo: $" + session.getSaldoUsuario());
     }
     private void verPerfil() {
-        VentanaPerfil ventanaperfil = new VentanaPerfil(session);
+        VentanaPerfil ventanaPerfil = new VentanaPerfil(session);
         frame.dispose();
-        ventanaperfil.mostrarVentana();
+        ventanaPerfil.mostrarVentana();
     }
 
+    private void irHistorial() {
+        VentanaHistorial ventanaHistorial = new VentanaHistorial(session);
+        frame.dispose();
+        ventanaHistorial.mostrarVentana();
+    }
     public void mostrarVentana() {
         frame.setVisible(true);
         SwingUtilities.invokeLater(()-> {frame.setLocationRelativeTo(null);});
 
     }
     private void irRuleta() {
-        ResultadoController resultado = new ResultadoController();
-        RuletaController ruleta = new RuletaController(session,  resultado);
-        VentanaRuleta ventanaRuleta =  new VentanaRuleta(session, resultado, ruleta);
+        VentanaRuleta ventanaRuleta =  new VentanaRuleta(session);
         frame.dispose();
         SwingUtilities.invokeLater(()-> {
             ventanaRuleta.mostrarVentana();

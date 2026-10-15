@@ -18,18 +18,18 @@ public class Resultado {
     public int getNumeroGanador() { return numeroGanador; }
     public TipoApuesta getTipoApuesta() { return tipoApuesta; }
     public int getMontoApostado() { return montoApostado; }
-    public boolean isEsGanador() { return esGanador; }
+    public boolean EsGanador() { return esGanador; }
     public int getMontoGanado() { return montoGanado; }
 
     public String toString() {
         String estado;
         if (esGanador) {
             estado = "Ganó $" + montoGanado;
-            return "Número: " + numeroGanador + " | Apuesta: " + tipoApuesta + " | " + estado;
+            return "Número: " + numeroGanador + " | Apuesta: " + tipoApuesta + " | " + "Monto: " + montoApostado + " | " + estado;
 
         } else if (!esGanador) {
             estado = "Perdió $" + montoApostado;
-            return "Número: " + numeroGanador + " | Apuesta: " + tipoApuesta + " | " + estado;
+            return "Número: " + numeroGanador + " | Apuesta: " + tipoApuesta + " | " + "Monto: " + montoApostado + " | "+ estado;
 
         }
         return"";

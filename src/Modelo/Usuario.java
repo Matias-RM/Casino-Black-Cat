@@ -1,5 +1,8 @@
 package Modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Usuario {
     private String username;
     private String password;
@@ -7,6 +10,7 @@ public class Usuario {
     private int id;
     private static int contador = 0;
     private int saldo;
+    private List<Resultado> historialResultados;
 
     public Usuario() {
         this.username = "invitado";
@@ -14,6 +18,7 @@ public class Usuario {
         this.nombre = "Invitado";
         this.id = 0;
         this.saldo = 0;
+        this.historialResultados = new ArrayList<>();
     }
     // Constructor con parámetros.
     public Usuario(String username, String password, String nombre, int saldoInicial) {
@@ -22,10 +27,17 @@ public class Usuario {
         setNombre(nombre);
         this.id = contador++;
         this.saldo = Math.max(saldoInicial, 0);
+        this.historialResultados = new ArrayList<>();
     }
     // Verifica si las credenciales ingresadas pertenecen al usuario
     public boolean validarCredencialess(String nombreUsuario, String contraseña) {
         return this.username.equals(nombreUsuario) && this.password.equals(contraseña);
+    }
+    public List<Resultado> getHistorialResultados() {
+        return this.historialResultados;
+    }
+    public void agregarResultados(Resultado resultado) {
+        this.historialResultados.add(resultado);
     }
 
 
