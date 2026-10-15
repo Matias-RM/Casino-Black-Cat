@@ -26,7 +26,7 @@ public class VentanaMenu {
     private void iniciarComponentes() {
 
         SwingUtilities.invokeLater(()-> {
-            frame.setTitle("Menú - Casino Black Cat **" + session.getUsuarioActual().getNombre()+"**");
+            frame.setTitle("Menú - Casino Black Cat * " + session.getUsuarioActual().getNombre()+" *");
             frame.setSize(800,600);
             panelBotones.setLayout(new BoxLayout(panelBotones,BoxLayout.Y_AXIS));
             panelBotones.setBorder(new EmptyBorder(2,10,2,10));
@@ -57,11 +57,15 @@ public class VentanaMenu {
             btnInicio.addActionListener(a -> irIngreso());
             btnJugar.addActionListener(e ->irRuleta());
             btnPerfil.addActionListener(e -> verPerfil());
-            btnHistorial.addActionListener(e -> {irHistorial();});
+            btnHistorial.addActionListener(e -> irHistorial());
+            btnSalir.addActionListener(e -> salir());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
         });
+    }
+    private void salir(){
+        frame.dispose();
     }
     private void actualizartexto() {
         textAreaInfo.setText("Bienvenido/a al menú principal \nA la izquierda tienes:\n -Jugar: abre la ventana de juego\n -Recargar: abre una ventana para que recarges saldo \n -Historial: abre la ventana de historial\n- Salir: cierra sesion y vuelve al login.\n\n\nSaldo: $" + session.getSaldoUsuario());
