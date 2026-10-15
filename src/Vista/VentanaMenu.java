@@ -1,8 +1,7 @@
 package Vista;
 
 import Controlador.SessionController;
-import Controlador.ResultadoController;
-import Controlador.RuletaController;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -84,9 +83,7 @@ public class VentanaMenu {
 
     }
     private void irRuleta() {
-        ResultadoController resultado = new ResultadoController(session);
-        RuletaController ruleta = new RuletaController(session,  resultado);
-        VentanaRuleta ventanaRuleta =  new VentanaRuleta(session, resultado, ruleta);
+        VentanaRuleta ventanaRuleta =  new VentanaRuleta(session);
         frame.dispose();
         SwingUtilities.invokeLater(()-> {
             ventanaRuleta.mostrarVentana();
