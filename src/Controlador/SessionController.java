@@ -25,9 +25,9 @@ public class SessionController {
         }
         return false;
     }
-    public String validarCredenciales(String nombreUsuario, String contraseña) {
+    public String validarCredenciales(String nombreUsuario, String password) {
         for (Object usuario : USUARIOS) {
-            if (((Usuario) usuario).validarCredencialess(nombreUsuario, contraseña)) {
+            if (((Usuario) usuario).validarCredencialess(nombreUsuario, password)) {
                 this.usuarioActual = (Usuario) usuario;
                 return ((Usuario) usuario).getNombre();
             }
