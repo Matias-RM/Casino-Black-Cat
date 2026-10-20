@@ -30,8 +30,8 @@ public class Usuario {
         this.historialResultados = new ArrayList<>();
     }
     // Verifica si las credenciales ingresadas pertenecen al usuario
-    public boolean validarCredencialess(String nombreUsuario, String contraseña) {
-        return this.username.equals(nombreUsuario) && this.password.equals(contraseña);
+    public boolean validarCredencialess(String nombreUsuario, String password) {
+        return this.username.equals(nombreUsuario) && this.password.equals(password);
     }
     public List<Resultado> getHistorialResultados() {
         return this.historialResultados;
