@@ -14,6 +14,7 @@ public class VentanaMenu {
     private final JButton btnInicio = new JButton("Inicio");
     private final JButton btnJugar = new JButton("Jugar");
     private final JButton btnHistorial = new JButton("Historial");
+    private final JButton btnEstadisticas = new JButton("Estadisticas");
     private final JButton btnSalir = new JButton("Salir");
     private final JLabel textAreaTitulo = new JLabel("RULETA - Casino Black Cat");
     private final JTextArea textAreaInfo = new JTextArea();
@@ -36,6 +37,7 @@ public class VentanaMenu {
             btnInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnJugar.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnHistorial.setAlignmentX(Component.CENTER_ALIGNMENT);
+            btnEstadisticas.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnPerfil.setAlignmentX(Component.CENTER_ALIGNMENT);
             btnSalir.setAlignmentX(Component.CENTER_ALIGNMENT);
             actualizartexto();
@@ -44,6 +46,7 @@ public class VentanaMenu {
             panelBotones.add(btnJugar);
             panelBotones.add(btnPerfil);
             panelBotones.add(btnHistorial);
+            panelBotones.add(btnEstadisticas);
             panelBotones.add(btnSalir);
             textAreaTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
             textAreaInfo.setEditable(false);
@@ -58,13 +61,24 @@ public class VentanaMenu {
             btnJugar.addActionListener(e ->irRuleta());
             btnPerfil.addActionListener(e -> verPerfil());
             btnHistorial.addActionListener(e -> irHistorial());
+            btnEstadisticas.addActionListener(e -> irEstadisticas());
             btnSalir.addActionListener(e -> salir());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
         });
     }
+    public void mostrarVentana() {
+        frame.setVisible(true);
+        SwingUtilities.invokeLater(()-> {frame.setLocationRelativeTo(null);});
+
+    }
     private void salir(){
+        frame.dispose();
+    }
+    private void irEstadisticas(){
+        VentanaEstadistica ventanaestadistica = new VentanaEstadistica(session);
+        ventanaestadistica.mostrarVentana();
         frame.dispose();
     }
     private void actualizartexto() {
@@ -78,27 +92,18 @@ public class VentanaMenu {
 
     private void irHistorial() {
         VentanaHistorial ventanaHistorial = new VentanaHistorial(session);
+        SwingUtilities.invokeLater(()-> {ventanaHistorial.mostrarVentana();});
         frame.dispose();
-        ventanaHistorial.mostrarVentana();
     }
-    public void mostrarVentana() {
-        frame.setVisible(true);
-        SwingUtilities.invokeLater(()-> {frame.setLocationRelativeTo(null);});
 
-    }
     private void irRuleta() {
         VentanaRuleta ventanaRuleta =  new VentanaRuleta(session);
-        frame.dispose();
-        SwingUtilities.invokeLater(()-> {
-            ventanaRuleta.mostrarVentana();
-        });
-    }
+        SwingUtilities.invokeLater(()-> {ventanaRuleta.mostrarVentana();});
+        frame.dispose();}
+
     private void irIngreso() {
         VentanaLogin ventanaLogin = new VentanaLogin(session);
         session.cerrarSession();
-        frame.dispose();
-        SwingUtilities.invokeLater(()-> {
-            ventanaLogin.mostrarVentana();
-        });
-    }
+        SwingUtilities.invokeLater(()-> {ventanaLogin.mostrarVentana();});
+        frame.dispose();}
 }
