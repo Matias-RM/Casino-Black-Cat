@@ -35,12 +35,6 @@ public class ResultadoController {
     }
     public int gananciaTotal() {return estadistica.gananciaTotal(session.obtenerResultados());}
     public int montoApostadoTotal(){return estadistica.montoApostadoTotal(session.obtenerResultados());}
-    public int getMontoApostado() {
-        return estadistica.getMontoApostado();
-    }
-    public int getGanancia(){
-        return estadistica.getGanancia();
-    }
     public int getVictoriasTotales() {return estadistica.victorias(session.obtenerResultados());}
     public int getRachaMaxima() {return estadistica.rachaMaxima(session.obtenerResultados());}
     public int getJuegos() {return estadistica.totalJuegos(session.obtenerResultados());}
