@@ -1,42 +1,38 @@
 package Modelo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 import java.util.Map;
 
 public class Estadistica {
-	private int ganancia;
-	private int montoApostado;
-	public Estadistica() {
-		this.ganancia = 0;
-		this.montoApostado = 0;
 
-		// TODO - implement Estadistica.Estadistica
+	public Estadistica() {
 	}
 	public int gananciaTotal(List<Resultado> resultados) {
-
+		int ganancia = 0;
 		for (Resultado resultado : resultados) {
 			if (resultado.EsGanador()){
-				this.ganancia += resultado.getMontoGanado();
+				ganancia += resultado.getMontoGanado();
 			}
 		}
-		return this.ganancia;
+		return ganancia;
 	}
 	public int montoApostadoTotal(List<Resultado> resultados) {
+		int montoApostado = 0;
 		for (Resultado resultado : resultados) {
-			this.montoApostado += resultado.getMontoApostado();
+			montoApostado += resultado.getMontoApostado();
 		}
 		return montoApostado;
 	}
 
-	public int getGanancia() {return ganancia;}
-	public int getMontoApostado() {return montoApostado;}
 	/**
 	 * 
 	 * @param resultados
 	 */
 	public int totalJuegos(List<Resultado> resultados) {
+		if (resultados.isEmpty()) {
+			return 0;
+		}
 		return resultados.size();
 	}
 
@@ -62,6 +58,9 @@ public class Estadistica {
 		int juegos = totalJuegos(resultados);
 		int victorias = victorias(resultados);
 		float porcentaje = (float) (victorias * 100) / juegos;
+		if (Float.isNaN(porcentaje)) {
+			return "Sin Datos";
+		}
 		return porcentaje + "%";
 	}
 
@@ -117,6 +116,9 @@ public class Estadistica {
 		);
 		String tipoMasJugado = Collections.max(tipoApuestas.entrySet(), Map.Entry.comparingByValue()).getKey();
 		//int valorMayor = tipoApuestas.get(tipoMasJugado); // Puede mostrar la cantidad de veces que se jugo ese tipo.
+		if (contRojo == 0 && contNegro == 0 && contPar == 0 && contImpar == 0) {
+			return "Sin Datos";
+		}
 		return tipoMasJugado;
 	}
 
