@@ -16,16 +16,14 @@ public class VentanaEstadistica {
 
 	/**
 	 *
-	 * @param session
+	 * @param session La sesion que se mantiene por el paso del juego.
 	 */
 	public VentanaEstadistica(SessionController session) {
 		this.session = session;
 		iniciarComponentes();
-		// TODO - implement VentanaEstadistica.VentanaEstadistica
 	}
 
 	public void iniciarComponentes() {
-		// TODO - implement VentanaEstadistica.iniciarComponentes
 
 		SwingUtilities.invokeLater(() -> {
 			frame.setSize(800, 600);
@@ -65,20 +63,17 @@ public class VentanaEstadistica {
 	}
 
 	public void volverMenu() {
-		// TODO - implement VentanaEstadistica.volverMenu
 		VentanaMenu ventanaMenu = new VentanaMenu(session);
 		frame.dispose();
 		SwingUtilities.invokeLater(() -> {ventanaMenu.mostrarVentana();});
 	}
 
 	public void mostrarVentana() {
-		// TODO - implement VentanaEstadistica.mostrarVentana
 		frame.setVisible(true);
 		SwingUtilities.invokeLater(() -> {frame.setLocationRelativeTo(null);});
 	}
 
 	public void actualizarTexto() {
-		// TODO - implement VentanaEstadistica.actualizarTexto
 		txtNombreUsuario.setText("                            " +
 				"Historial de " + session.getNombreUsuario());
 		txtAreaEstadistica.setText(
