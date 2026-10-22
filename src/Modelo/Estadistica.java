@@ -8,6 +8,12 @@ public class Estadistica {
 
 	public Estadistica() {
 	}
+
+	/**
+	 *
+	 * @param resultados Lista  de resultados a evaluar.
+	 * @return retorna la ganancia obtenida
+	 */
 	public int gananciaTotal(List<Resultado> resultados) {
 		int ganancia = 0;
 		for (Resultado resultado : resultados) {
@@ -17,6 +23,12 @@ public class Estadistica {
 		}
 		return ganancia;
 	}
+
+	/**
+	 *
+	 * @param resultados Lista  de resultados a evaluar.
+	 * @return retorna el total del monto apostado.
+	 */
 	public int montoApostadoTotal(List<Resultado> resultados) {
 		int montoApostado = 0;
 		for (Resultado resultado : resultados) {
@@ -27,7 +39,8 @@ public class Estadistica {
 
 	/**
 	 * 
-	 * @param resultados
+	 * @param resultados Lista  de resultados a evaluar.
+	 * @return retorna el tamaño de la lista de resultados.
 	 */
 	public int totalJuegos(List<Resultado> resultados) {
 		if (resultados.isEmpty()) {
@@ -38,10 +51,10 @@ public class Estadistica {
 
 	/**
 	 * 
-	 * @param resultados
+	 * @param resultados Lista  de resultados a evaluar.
+	 * @return retorna el total de victorias.
 	 */
 	public int victorias(List<Resultado> resultados) {
-		// TODO - implement Estadistica.victorias
 		int victorias = 0;
 		for (Resultado resultado : resultados) {
 			if (resultado.EsGanador()) victorias++;
@@ -51,10 +64,10 @@ public class Estadistica {
 
 	/**
 	 * 
-	 * @param resultados
+	 * @param resultados Lista  de resultados a evaluar.
+	 * @return retorna el porcentaje de victorias en texto.
 	 */
 	public String porcentajeVictoria(List<Resultado> resultados) {
-		// TODO - implement Estadistica.porcentajeVictoria
 		int juegos = totalJuegos(resultados);
 		int victorias = victorias(resultados);
 		float porcentaje = (float) (victorias * 100) / juegos;
@@ -66,10 +79,10 @@ public class Estadistica {
 
 	/**
 	 * 
-	 * @param resultados
+	 * @param resultados Lista  de resultados a evaluar.
+	 * @return retorna la racha maxima de victorias.
 	 */
 	public int rachaMaxima(List<Resultado> resultados) {
-		// TODO - implement Estadistica.rachaMaxima
 		int contadorVictorias = 0;
 		int rachaMax = 0;
 		for (Resultado resultado : resultados) {
@@ -86,10 +99,10 @@ public class Estadistica {
 
 	/**
 	 * 
-	 * @param resultados
+	 * @param resultados Lista  de resultados a evaluar.
+	 * @return retorna el tipo de apuesta mas jugado.
 	 */
 	public String tipoMasJugado(List<Resultado> resultados) {
-		// TODO - implement Estadistica.tipoMasJugado
 		int contRojo = 0;
 		int contNegro = 0;
 		int contPar = 0;
