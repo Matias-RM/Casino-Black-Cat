@@ -1,4 +1,5 @@
 package Controlador;
+import Modelo.Resultado;
 import Modelo.Usuario;
 
 import java.util.ArrayList;
@@ -47,7 +48,11 @@ public class SessionController {
         USUARIOS.add(usuarioActual);
     }
 
+    public void agregarResultado(Resultado resultado) {
+        usuarioActual.agregarResultados(resultado);
+    }
 
+    public List<Resultado> obtenerResultados() {return usuarioActual.getHistorialResultados();}
     public Usuario getUsuarioActual() {
         return usuarioActual;
     }
