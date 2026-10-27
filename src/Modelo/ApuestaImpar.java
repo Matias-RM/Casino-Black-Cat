@@ -1,7 +1,5 @@
 package Modelo;
 public class ApuestaImpar extends ApuestaBase {
-    private int montoApuesta;
-    private String tipoApuesta;
 
     public ApuestaImpar(int montoApuesta, String tipoApuesta) {
         super(montoApuesta, tipoApuesta);
