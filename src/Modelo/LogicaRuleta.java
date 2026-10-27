@@ -31,12 +31,42 @@ public class LogicaRuleta {
      * @param n número de la ruleta.
      * @return true si es rojo, false en caso contrario.
      */
-    public boolean esRojo(int n) {
+    public String esRojo(int n) {
         for (int i = 0; i < numerosRojos.length; i++) {
             if (numerosRojos[i] == n) {
-                return true;
+                return "Rojo";
             }
         }
-        return false;
+        return "Negro";
+    }
+
+    /**
+     *
+     * @param usuario Usuario actual en el juego.
+     * @param apuesta Apuesta seleccionada.
+     * @return Resultado de la apuesta realizada.
+     */
+    public Resultado realizarApuesta(Usuario usuario, ApuestaBase apuesta) {
+
+        if (apuesta.getMontoApuesta() <= 0) {
+            throw new IllegalArgumentException("El monto apostado debe ser mayor a 0");
+        }
+        if (usuario.getSaldo() < apuesta.getMontoApuesta()) {
+            throw new IllegalArgumentException("Saldo insuficiente para realizar esta apuesta");
+        }
+
+        usuario.quitarSaldo(apuesta.getMontoApuesta());
+
+        int numeroObtenido = girarRuleta();
+        boolean gano = apuesta.acierta(numeroObtenido, esRojo(numeroObtenido));
+
+        if (!gano) {
+            int ganancia = 0;
+            return new Resultado(numeroObtenido, apuesta.getTipoApuesta(), apuesta.getMontoApuesta(), gano, ganancia);
+        } else {
+            int ganancia = apuesta.getMontoApuesta() * 2;
+            usuario.depositar(ganancia);
+            return new Resultado(numeroObtenido, apuesta.getTipoApuesta(), apuesta.getMontoApuesta(), gano, ganancia);
+        }
     }
 }
