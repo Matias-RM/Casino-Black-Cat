@@ -4,8 +4,7 @@ package Vista;
 import Controlador.ResultadoController;
 import Controlador.RuletaController;
 import Controlador.SessionController;
-import Modelo.Resultado;
-import Modelo.TipoApuesta;
+import Modelo.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,8 +29,8 @@ public class VentanaRuleta {
     private final JTextArea txtProceRuleta = new JTextArea(100, 1);
 
     private final JComboBox<String> comboTipo = new JComboBox<>();
-    private final JComboBox<TipoApuesta> comboColor = new JComboBox<>(TipoApuesta.values());
-    private final JComboBox<TipoApuesta> comboParidad = new JComboBox<>(TipoApuesta.values());
+    private final JComboBox<String> comboColor = new JComboBox<>();
+    private final JComboBox<String> comboParidad = new JComboBox<>();
     private final JSpinner spinnerMonto = new JSpinner(new SpinnerNumberModel(0, 0, 5000000, 50));
     private final JButton btnGirar = new JButton("Girar ruleta");
     private final JButton btnVolverMenu = new JButton("Volver al menu");
@@ -39,8 +38,8 @@ public class VentanaRuleta {
 
     public VentanaRuleta(SessionController session) {
      this.session = session;
-     this.resultadoController = new ResultadoController(session);
-     this.ruletaController = new RuletaController(session);
+     this.resultadoController = new ResultadoController(session.getUsuarioActual());
+     this.ruletaController = new RuletaController(session.getUsuarioActual());
      iniciarComponentes();
     }
     private void iniciarComponentes() {
@@ -60,11 +59,12 @@ public class VentanaRuleta {
             panelSeleccion.setLayout(new GridLayout(4, 1, 20, 10));
 
             comboTipo.addItem("Color");
+            comboColor.addItem("Rojo");
+            comboColor.addItem("Negro");
             comboTipo.addItem("Paridad");
-            comboColor.removeItem(TipoApuesta.Par);
-            comboColor.removeItem(TipoApuesta.Impar);
-            comboParidad.removeItem(TipoApuesta.Rojo);
-            comboParidad.removeItem(TipoApuesta.Negro);
+            comboParidad.addItem("Par");
+            comboParidad.addItem("Impar");
+
             txtSaldo.setEditable(false);
 
 
@@ -136,24 +136,19 @@ public class VentanaRuleta {
     }
      private void iniciarRuleta() {
         actualizarSaldo();
-
-         Resultado resultado = ruletaController.realizarApuesta(tipoApuesta(),  getMonto());
-         imprimirResultado(resultado);
-         actualizarSaldo();
-
-     }
-    private TipoApuesta tipoApuesta() {
         if (comboColor.isEnabled()) {
-            return (TipoApuesta) comboColor.getSelectedItem();
+        ruletaController.realizarApuesta(getMonto(),comboColor.getSelectedItem().toString());
         }
         if (comboParidad.isEnabled()) {
-            return (TipoApuesta) comboParidad.getSelectedItem();
+        ruletaController.realizarApuesta(getMonto(),comboParidad.getSelectedItem().toString());
         }
-        return null;
-    }
-    private void imprimirResultado(Resultado resultado){
+        imprimirResultado();
+        actualizarSaldo()
+        ;}
+
+    private void imprimirResultado(){
         if (indiceHistorial <= resultadoController.getHistorialResultados().size()){
-            String textoInicial = "> " + indiceHistorial + " | " + resultado.toString();
+            String textoInicial = "> " + indiceHistorial + " | " + resultadoController.getHistorialResultados().get(indiceHistorial-1);
             txtProceRuleta.setText(txtProceRuleta.getText() +"\n" + textoInicial);
             indiceHistorial++;
             if (indiceHistorial == 23*indiceBorrarHistorial) {
