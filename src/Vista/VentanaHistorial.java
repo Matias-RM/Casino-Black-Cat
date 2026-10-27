@@ -68,7 +68,7 @@ public class VentanaHistorial {
     private void actualizarTexto(){
         txtNombreUsuario.setText("                                      " +
                 "Historial de " + session.getNombreUsuario());
-        ResultadoController resultado = new ResultadoController(session);
+        ResultadoController resultado = new ResultadoController(session.getUsuarioActual());
 
         for (int i = 0; i < resultado.getHistorialResultados().size(); i++) {
             String textoHistorial = "\n" + resultado.getHistorialResultados().get(i).toString();
