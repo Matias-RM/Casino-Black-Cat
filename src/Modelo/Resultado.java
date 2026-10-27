@@ -1,22 +1,22 @@
 package Modelo;
 
 public class Resultado {
-    private int numeroGanador;
-    private TipoApuesta tipoApuesta;
+    private int numero;
+    private String tipoApuesta;
     private int montoApostado;
     private boolean esGanador;
     private int montoGanado;
 
-    public Resultado(int numeroGanador, TipoApuesta tipoApuesta, int montoApostado, boolean esGanador, int montoGanado) {
-        this.numeroGanador = numeroGanador;
+    public Resultado(int numero, String tipoApuesta, int montoApostado, boolean esGanador, int montoGanado) {
+        this.numero = numero;
         this.tipoApuesta = tipoApuesta;
         this.montoApostado = montoApostado;
         this.esGanador = esGanador;
         this.montoGanado = montoGanado;
     }
 
-    public int getNumeroGanador() { return numeroGanador; }
-    public TipoApuesta getTipoApuesta() { return tipoApuesta; }
+    public int getNumero() { return numero; }
+    public String getTipoApuesta() { return tipoApuesta; }
     public int getMontoApostado() { return montoApostado; }
     public boolean EsGanador() { return esGanador; }
     public int getMontoGanado() { return montoGanado; }
@@ -25,11 +25,11 @@ public class Resultado {
         String estado;
         if (esGanador) {
             estado = "Ganó $" + montoGanado;
-            return "Número: " + numeroGanador + " | Apuesta: " + tipoApuesta + " | " + "Monto: " + montoApostado + " | " + estado;
+            return "Número: " + numero + " | Apuesta: " + tipoApuesta + " | " + "Monto: " + montoApostado + " | " + estado;
 
         } else if (!esGanador) {
             estado = "Perdió $" + montoApostado;
-            return "Número: " + numeroGanador + " | Apuesta: " + tipoApuesta + " | " + "Monto: " + montoApostado + " | "+ estado;
+            return "Número: " + numero + " | Apuesta: " + tipoApuesta + " | " + "Monto: " + montoApostado + " | "+ estado;
 
         }
         return"";
