@@ -6,6 +6,6 @@ public class ApuestaPar extends ApuestaBase {
     }
     @Override
     public boolean acierta(int numero, String color) {
-        return numero % 2 == 0;
+        return numero % 2 == 0 && numero != 0;
     }
 }
