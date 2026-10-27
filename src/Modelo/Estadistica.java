@@ -108,16 +108,16 @@ public class Estadistica {
 		int contPar = 0;
 		int contImpar = 0;
 		for  (Resultado resultado : resultados) {
-			if (resultado.getTipoApuesta().equals(TipoApuesta.Rojo)) {
+			if (resultado.getTipoApuesta().equals("Rojo")) {
 				contRojo++;
 			}
-			if (resultado.getTipoApuesta().equals(TipoApuesta.Negro)) {
+			if (resultado.getTipoApuesta().equals("Negro")) {
 				contNegro++;
 			}
-			if (resultado.getTipoApuesta().equals(TipoApuesta.Par)) {
+			if (resultado.getTipoApuesta().equals("Par")) {
 				contPar++;
 			}
-			if (resultado.getTipoApuesta().equals(TipoApuesta.Impar)) {
+			if (resultado.getTipoApuesta().equals("Impar")) {
 				contImpar++;
 			}
 		}
