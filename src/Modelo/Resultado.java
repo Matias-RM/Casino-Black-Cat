@@ -20,7 +20,7 @@ public class Resultado {
     public int getMontoApostado() { return montoApostado; }
     public boolean EsGanador() { return esGanador; }
     public int getMontoGanado() { return montoGanado; }
-
+    @Override
     public String toString() {
         String estado;
         if (esGanador) {
