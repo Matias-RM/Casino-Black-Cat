@@ -1,14 +1,20 @@
 package Controlador;
 import Modelo.*;
+import Persistencia.GestorArchivos;
+import java.util.List;
 
 public class RuletaController {
 
+    private final List<Usuario> usuarios;
     private LogicaRuleta ruleta;
     private Usuario usuario;
+    private GestorArchivos gestorArchivos;
 
-    public RuletaController(Usuario usuario) {
+    public RuletaController(Usuario usuario, List<Usuario> usuarios) {
             this.ruleta = new LogicaRuleta();
             this.usuario = usuario;
+            this.usuarios = usuarios;
+            this.gestorArchivos = new GestorArchivos();
         }
         public int getRandNumb() {
         return ruleta.girarRuleta();
@@ -25,6 +31,8 @@ public class RuletaController {
             if  (apuesta != null) {
                 Resultado resultado = ruleta.realizarApuesta(usuario, apuesta);
                 usuario.agregarResultados(resultado);
+                gestorArchivos.guardarUsuarios(usuarios);
+                gestorArchivos.guardarResultados(usuario.getUsername(), resultado);
         }
     }
 }

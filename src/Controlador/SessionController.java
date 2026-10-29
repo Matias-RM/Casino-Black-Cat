@@ -1,6 +1,7 @@
 package Controlador;
 import Modelo.Resultado;
 import Modelo.Usuario;
+import Persistencia.GestorArchivos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,29 +9,38 @@ import java.util.List;
 public class SessionController {
     private Usuario usuarioActual;
     // --- Lista dinámica de usuarios ---
-    public static final List USUARIOS = new ArrayList<>();
+    private List<Usuario> USUARIOS = new ArrayList<>();
+    private GestorArchivos gestorArchivos = new GestorArchivos();
 
     public SessionController() {
-        this.usuarioActual = new Usuario("admin", "1234","Admin", 50000);
-        this.USUARIOS.add(usuarioActual);
-
+        this.usuarioActual = null;
+        this.USUARIOS = gestorArchivos.cargarUsuarios(USUARIOS);
+    }
+    private boolean verificarUsuarioUnico(String nombreUsuario) {
+        for (Object usuario: USUARIOS) {
+            if (((Usuario) usuario).getNombre().equals(nombreUsuario)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // 1. Iniciar sesión tradicional
     public boolean iniciarSesion(String user, String pass) {
-        for (Object usuarios : USUARIOS) {
-            if (((Usuario) usuarios).validarCredencialess(user, pass)) {
-                this.usuarioActual = (Usuario) usuarios;
+        for (Usuario usuarios : USUARIOS) {
+            if ( usuarios.validarCredencialess(user, pass)) {
+                this.usuarioActual =  usuarios;
+                gestorArchivos.cargarResultados(USUARIOS);
                 return true;
             }
         }
         return false;
     }
     public String validarCredenciales(String nombreUsuario, String password) {
-        for (Object usuario : USUARIOS) {
-            if (((Usuario) usuario).validarCredencialess(nombreUsuario, password)) {
-                this.usuarioActual = (Usuario) usuario;
-                return ((Usuario) usuario).getNombre();
+        for (Usuario usuario : USUARIOS) {
+            if (usuario.validarCredencialess(nombreUsuario, password)) {
+                this.usuarioActual = usuario;
+                return usuario.getNombre();
             }
         }
         return "";
@@ -44,8 +54,11 @@ public class SessionController {
                 nombre == null || nombre.isBlank()) {
             throw new IllegalArgumentException("Datos requeridos");
         }
-        usuarioActual = new Usuario(usuario, clave, nombre, 0);
-        USUARIOS.add(usuarioActual);
+        if (verificarUsuarioUnico(usuario)) {
+            usuarioActual = new Usuario(usuario, clave, nombre, 0);
+            USUARIOS.add(usuarioActual);}
+
+        gestorArchivos.guardarUsuarios(USUARIOS);
     }
 
     public void agregarResultado(Resultado resultado) {
@@ -60,14 +73,18 @@ public class SessionController {
       return (usuarioActual !=null) ? usuarioActual.getNombre() : "Invitado";
     };
     public String getUsernameUsuario() {return usuarioActual.getUsername();}
-    public void setUsernameUsuario(String usuario) {
-        this.usuarioActual.setUsername(usuario);
-    }
+    public List<Usuario> getUsuarios() {return USUARIOS;}
     public int getSaldoUsuario() {
         return (usuarioActual !=null) ? usuarioActual.getSaldo() : 0;
     }
+    public void setUsernameUsuario(String nombre) {
+        gestorArchivos.actualizarPerfilUsuario(nombre, usuarioActual.getUsername());
+        this.usuarioActual.setUsername(nombre);
+        gestorArchivos.guardarUsuarios(USUARIOS);
+    }
     public void recargarSaldoUsuario(int monto) {
         usuarioActual.depositar(monto);
+        gestorArchivos.guardarUsuarios(USUARIOS);
     }
     public void cerrarSession() {
         usuarioActual = null;
