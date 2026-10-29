@@ -39,7 +39,7 @@ public class VentanaRuleta {
     public VentanaRuleta(SessionController session) {
      this.session = session;
      this.resultadoController = new ResultadoController(session.getUsuarioActual());
-     this.ruletaController = new RuletaController(session.getUsuarioActual());
+     this.ruletaController = new RuletaController(session.getUsuarioActual(), session.getUsuarios());
      iniciarComponentes();
     }
     private void iniciarComponentes() {
@@ -143,23 +143,22 @@ public class VentanaRuleta {
         ruletaController.realizarApuesta(getMonto(),comboParidad.getSelectedItem().toString());
         }
         imprimirResultado();
-        actualizarSaldo()
-        ;}
+        actualizarSaldo();
+    }
 
     private void imprimirResultado(){
         if (indiceHistorial <= resultadoController.getHistorialResultados().size()){
-            String textoInicial = "> " + indiceHistorial + " | " + resultadoController.getHistorialResultados().get(indiceHistorial-1);
+            String textoInicial = "> " + indiceHistorial + " | " + resultadoController.getHistorialResultados().getLast().toString();
             txtProceRuleta.setText(txtProceRuleta.getText() +"\n" + textoInicial);
             indiceHistorial++;
             if (indiceHistorial == 23*indiceBorrarHistorial) {
              borrarHistorial();
              txtProceRuleta.setText(txtProceRuleta.getText() +"\n" + textoInicial);
              indiceBorrarHistorial++;
-         }
+            }
         }
     }
     private void borrarHistorial() {
         txtProceRuleta.setText("");
     }
-
 }
