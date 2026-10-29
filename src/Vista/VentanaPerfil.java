@@ -104,7 +104,9 @@ public class VentanaPerfil {
         txtArea.setText("Nombre de Usuario: " + session.getUsernameUsuario() + "\nSaldo: $" + session.getSaldoUsuario());
     }
     private void cambiarNombreUsuario(String nuevoNombreUsuario) {
+        if (nuevoNombreUsuario != null) {
         session.setUsernameUsuario(nuevoNombreUsuario);
+        }
     }
     private void recargarSaldo(int Saldo) {
         session.recargarSaldoUsuario(Saldo);

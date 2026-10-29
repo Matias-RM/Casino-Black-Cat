@@ -85,31 +85,31 @@ public class VentanaEstadistica {
 				"\n\n> Tipo de Apuesta Preferido: " + tipoMasJugado());
 		}
 	private int numVictorias(){
-		ResultadoController resultado = new ResultadoController(session);
+		ResultadoController resultado = new ResultadoController(session.getUsuarioActual());
 		return resultado.getVictoriasTotales();
 	}
 	private int ganancias(){
-		ResultadoController resultado = new ResultadoController(session);
+		ResultadoController resultado = new ResultadoController(session.getUsuarioActual());
 		return resultado.gananciaTotal();
 	}
 	private int montoApostado(){
-		ResultadoController resultado = new ResultadoController(session);
+		ResultadoController resultado = new ResultadoController(session.getUsuarioActual());
 		return resultado.montoApostadoTotal();
 	}
 	private int rachaMaxima(){
-		ResultadoController resultado = new ResultadoController(session);
+		ResultadoController resultado = new ResultadoController(session.getUsuarioActual());
 		return resultado.getRachaMaxima();
 	}
 	private String porcentajeVictoria() {
-		ResultadoController resultado = new ResultadoController(session);
+		ResultadoController resultado = new ResultadoController(session.getUsuarioActual());
 		return resultado.getPorcentajeVictorias();
 	}
 	private String tipoMasJugado() {
-		ResultadoController resultado = new ResultadoController(session);
+		ResultadoController resultado = new ResultadoController(session.getUsuarioActual());
 		return resultado.getTipoMasJugado();
 	}
 	private int totalJuegos() {
-		ResultadoController resultado = new ResultadoController(session);
+		ResultadoController resultado = new ResultadoController(session.getUsuarioActual());
 		return resultado.getJuegos();
 	}
 }

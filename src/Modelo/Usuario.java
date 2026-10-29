@@ -61,8 +61,11 @@ public class Usuario {
         return nombre;
     }
     public String getUsername() {return username;}
-    public String setUsername(String username) {return this.username=username;}
+    public void setUsername(String username) {
+        this.username = username;
+    }
     public int getSaldo() {
         return saldo;
     }
+    public String getPassword() {return password;}
 }

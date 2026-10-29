@@ -1,49 +1,38 @@
 package Controlador;
-import Modelo.Resultado;
-import Modelo.LogicaRuleta;
-import Modelo.TipoApuesta;
-import Modelo.Usuario;
+import Modelo.*;
+import Persistencia.GestorArchivos;
+import java.util.List;
 
 public class RuletaController {
 
+    private final List<Usuario> usuarios;
     private LogicaRuleta ruleta;
-    private SessionController session;
+    private Usuario usuario;
+    private GestorArchivos gestorArchivos;
 
-    public RuletaController(SessionController sessionController) {
+    public RuletaController(Usuario usuario, List<Usuario> usuarios) {
             this.ruleta = new LogicaRuleta();
-            this.session = sessionController;
+            this.usuario = usuario;
+            this.usuarios = usuarios;
+            this.gestorArchivos = new GestorArchivos();
         }
         public int getRandNumb() {
         return ruleta.girarRuleta();
         }
 
-        public Resultado realizarApuesta(TipoApuesta tipo, int monto) {
-            Usuario usuario = session.getUsuarioActual();
-            ResultadoController resultadoController = new ResultadoController(session);
-            usuario.quitarSaldo(monto);
-            if (monto <= 0) {
-                throw new IllegalArgumentException("El monto apostado debe ser mayor a 0");
+        public void realizarApuesta(int monto, String tipoApuesta) {
+        ApuestaBase apuesta = null;
+            switch (tipoApuesta) {
+                case "Rojo"  -> apuesta = new ApuestaRojo(monto, "Rojo");
+                case "Negro" -> apuesta = new ApuestaNegro(monto, "Negro");
+                case "Par"   -> apuesta = new ApuestaPar(monto, "Par");
+                case "Impar" -> apuesta = new ApuestaImpar(monto, "Impar");
             }
-            if (usuario.getSaldo() < monto) {
-                throw new IllegalArgumentException("Saldo insuficiente para realizar esta apuesta");
-            }
-
-            int numeroObtenido = getRandNumb();
-            boolean gano = resultadoController.evaluarResultado(numeroObtenido, tipo);
-
-            if (!gano) {
-                int ganancia = 0;
-                Resultado resultado = new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
-                resultadoController.registrarResultado(resultado);
-                return resultado;
-            } else {
-                int ganancia = monto * 2;
-                usuario.depositar(ganancia);
-                Resultado resultado = new Resultado(numeroObtenido, tipo, monto, gano, ganancia);
-                resultadoController.registrarResultado(resultado);
-                return resultado;
-
-
-            }
+            if  (apuesta != null) {
+                Resultado resultado = ruleta.realizarApuesta(usuario, apuesta);
+                usuario.agregarResultados(resultado);
+                gestorArchivos.guardarUsuarios(usuarios);
+                gestorArchivos.guardarResultados(usuario.getUsername(), resultado);
         }
     }
+}
